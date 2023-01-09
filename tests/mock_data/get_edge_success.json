@@ -1,0 +1,10 @@
+{
+    "group": "edges",
+    "data": {
+        "id": "edge1",
+        "source": "node1",
+        "target": "node2",
+        "source-label": "node2_label",
+        "target-label": "node3_label"
+    }
+}

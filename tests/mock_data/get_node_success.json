@@ -1,0 +1,9 @@
+{
+    "group": "nodes",
+    "data": {
+        "id": "node1",
+        "parent": "node1_parent",
+        "label": "node1_label"
+    },
+    "classes": " node1"
+}

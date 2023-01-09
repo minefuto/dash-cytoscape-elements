@@ -1,0 +1,54 @@
+[
+    {
+        "data": {
+            "id": "node1",
+            "parent": "node1_parent",
+            "label": "node1_label"
+        },
+        "position": {
+            "x": 1.0,
+            "y": 1.0
+        },
+        "selected": true,
+        "selectable": false,
+        "locked": true,
+        "grabbable": false,
+        "pannable": true,
+        "classes": " node1",
+        "scratch": {
+            "scratch1_key": "scratch1_value"
+        }
+    },
+    {
+        "data": {
+            "id": "node2"
+        }
+    },
+    {
+        "data": {
+            "id": "edge1",
+            "source": "node1",
+            "target": "node2",
+            "label": "edge1_label",
+            "source-label": "node1_label",
+            "target-label": "node2_label"
+        },
+        "selected": true,
+        "selectable": false,
+        "locked": true,
+        "grabbable": false,
+        "pannable": false,
+        "classes": " edge1 edge2",
+        "scratch": {
+            "scratch1_key": "scratch1_value",
+            "scratch2_key": "scratch2_value"
+        }
+    },
+    {
+        "data": {
+            "id": "edge2",
+            "source": "node2",
+            "target": "node1"
+        }
+    }
+]

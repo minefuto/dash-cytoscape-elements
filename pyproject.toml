@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dash-cytoscape-elements"
+version = "0.0.1"
+description = "Python object for dash-cytoscape elements"
+authors = ["minefuto <minefuto@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/minefuto/dash-cytoscape-elements"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pydantic = "^1.10.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.0"
+black = "^22.12.0"
+isort = "^5.11.4"
+tox = "^4.2.6"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
