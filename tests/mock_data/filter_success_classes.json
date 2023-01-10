@@ -1,0 +1,10 @@
+[
+    {
+        "data": {
+            "id": "node3",
+            "parent": "node3_parent",
+            "label": "node3_label"
+        },
+        "classes": "node3 node3.1"
+    }
+]

@@ -14,7 +14,7 @@
         "locked": true,
         "grabbable": false,
         "pannable": true,
-        "classes": " node1",
+        "classes": "node1",
         "scratch": {
             "scratch1_key": "scratch1_value"
         }
@@ -38,7 +38,7 @@
         "locked": true,
         "grabbable": false,
         "pannable": false,
-        "classes": " edge1 edge2",
+        "classes": "edge1 edge2",
         "scratch": {
             "scratch1_key": "scratch1_value",
             "scratch2_key": "scratch2_value"

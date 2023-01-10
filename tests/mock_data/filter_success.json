@@ -5,7 +5,7 @@
             "parent": "node1_parent",
             "label": "node1_label"
         },
-        "classes": " node1"
+        "classes": "node1"
     },
     {
         "data": {
@@ -13,7 +13,7 @@
             "parent": "node2_parent",
             "label": "node2_label"
         },
-        "classes": " node2"
+        "classes": "node2"
     },
     {
         "data": {
@@ -21,6 +21,6 @@
             "parent": "node3_parent",
             "label": "node3_label"
         },
-        "classes": " node3"
+        "classes": "node3 node3.1"
     }
 ]

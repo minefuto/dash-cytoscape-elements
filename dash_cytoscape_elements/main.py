@@ -75,6 +75,8 @@ class EdgeData(BaseElement):
 class Element(BaseElement):
     def is_match(self, **kwargs) -> bool:
         for k, v in kwargs.items():
+            if k == "classes":
+                return set(self.classes.split()) >= set(v.split())
             if not (self.is_match_attribute(k, v)):
                 return False
         return True
@@ -83,7 +85,10 @@ class Element(BaseElement):
         classes = self.classes.split()
         for c in value.split():
             if not (c in classes):
-                self.classes = self.classes + " {}".format(c)
+                if self.classes:
+                    self.classes = self.classes + " {}".format(c)
+                else:
+                    self.classes = c
 
     def add(self, **kwargs):
         for k, v in kwargs.items():
