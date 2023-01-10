@@ -20,7 +20,9 @@ def test_filter_success(init):
     assert filter == Elements.parse_file("./tests/mock_data/filter_success.json")
 
     filter_classes = init.filter(classes="node3.1")
-    assert filter_classes == Elements.parse_file("./tests/mock_data/filter_success_classes.json")
+    assert filter_classes == Elements.parse_file(
+        "./tests/mock_data/filter_success_classes.json"
+    )
 
 
 def test_filter_failed(init):
