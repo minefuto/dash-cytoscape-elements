@@ -16,7 +16,12 @@ class BaseElement(BaseModel):
         if hasattr(self, key):
             if isinstance(getattr(self, key), List):
                 if isinstance(value, List):
-                    return set(getattr(self, key)) == set(value)
+                    return set(getattr(self, key)) >= set(value)
+                else:
+                    return value in getattr(self, key)
+            elif isinstance(getattr(self, key), Set):
+                if isinstance(value, Set):
+                    return getattr(self, key) >= value
                 else:
                     return value in getattr(self, key)
             elif isinstance(getattr(self, key), Dict):
@@ -38,6 +43,14 @@ class BaseElement(BaseModel):
                     for v in value:
                         if not (v in getattr(self, key)):
                             getattr(self, key).append(v)
+                else:
+                    if not (value in getattr(self, key)):
+                        getattr(self, key).append(value)
+            if isinstance(getattr(self, key), Set):
+                if isinstance(value, Set):
+                    for v in value:
+                        if not (v in getattr(self, key)):
+                            getattr(self, key).add(v)
                 else:
                     if not (value in getattr(self, key)):
                         getattr(self, key).append(value)
