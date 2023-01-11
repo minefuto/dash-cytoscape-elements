@@ -207,23 +207,29 @@ class Elements(BaseModel):
             >>> e = Elements()
             >>> e.add(id="node1", classes="test", label="node1_label")
             >>> pprint(e.to_dash())
-            [{'classes': 'test', 'data': {'id': 'node1', 'label': 'node1_label'}}]
-            >>>
+            [{'classes': 'test',
+              'data': {'id': 'node1', 'label': 'node1_label'},
+              'group': 'nodes'}]
             >>> e.add(source="node1", target="node2")
             >>> pprint(e.to_dash())
-            [{'classes': 'test', 'data': {'id': 'node1', 'label': 'node1_label'}},
-             {'data': {'id': '87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb',
+            [{'classes': 'test',
+              'data': {'id': 'node1', 'label': 'node1_label'},
+              'group': 'nodes'},
+             {'data': {'id': 'dd2f9795-aa91-4532-9a00-438ad454799b',
                        'source': 'node1',
-                       'target': 'node2'}}]
-            >>>
+                       'target': 'node2'},
+              'group': 'edges'}]
             >>> e.add(id="node1", classes="test2", label="node1.2")
             >>> e.add(source="node1", target="node2", label="edge1")
             >>> pprint(e.to_dash())
-            [{'classes': 'test test2', 'data': {'id': 'node1', 'label': 'node1.2'}},
-             {'data': {'id': '87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb',
+            [{'classes': 'test test2',
+              'data': {'id': 'node1', 'label': 'node1.2'},
+              'group': 'nodes'},
+             {'data': {'id': 'dd2f9795-aa91-4532-9a00-438ad454799b',
                        'label': 'edge1',
                        'source': 'node1',
-                       'target': 'node2'}}]
+                       'target': 'node2'},
+              'group': 'edges'}]
 
         Note:
             * UUID is assigned if not exist `id` in the `kwargs`.

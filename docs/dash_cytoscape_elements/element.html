@@ -141,7 +141,7 @@ class Element(BaseElement):
 
 class Node(Element):
 
-    group: str = &#34;nodes&#34;
+    group: str = &#34;&#34;
     data: NodeData = NodeData()
     position: Position = Position()
     selected: bool = False
@@ -164,7 +164,7 @@ class Node(Element):
 
 class Edge(Element):
 
-    group: str = &#34;edges&#34;
+    group: str = &#34;&#34;
     data: EdgeData = EdgeData()
     selected: bool = False
     selectable: bool = True
@@ -206,7 +206,7 @@ class Edge(Element):
 </summary>
 <pre><code class="python">class Edge(Element):
 
-    group: str = &#34;edges&#34;
+    group: str = &#34;&#34;
     data: EdgeData = EdgeData()
     selected: bool = False
     selectable: bool = True
@@ -357,7 +357,7 @@ def generate_group(cls, group):
 </summary>
 <pre><code class="python">class Node(Element):
 
-    group: str = &#34;nodes&#34;
+    group: str = &#34;&#34;
     data: NodeData = NodeData()
     position: Position = Position()
     selected: bool = False

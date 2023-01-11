@@ -266,23 +266,29 @@ __all__ = [
             &gt;&gt;&gt; e = Elements()
             &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test&#34;, label=&#34;node1_label&#34;)
             &gt;&gt;&gt; pprint(e.to_dash())
-            [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}}]
-            &gt;&gt;&gt;
+            [{&#39;classes&#39;: &#39;test&#39;,
+              &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;},
+              &#39;group&#39;: &#39;nodes&#39;}]
             &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;)
             &gt;&gt;&gt; pprint(e.to_dash())
-            [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}},
-             {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+            [{&#39;classes&#39;: &#39;test&#39;,
+              &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;},
+              &#39;group&#39;: &#39;nodes&#39;},
+             {&#39;data&#39;: {&#39;id&#39;: &#39;dd2f9795-aa91-4532-9a00-438ad454799b&#39;,
                        &#39;source&#39;: &#39;node1&#39;,
-                       &#39;target&#39;: &#39;node2&#39;}}]
-            &gt;&gt;&gt;
+                       &#39;target&#39;: &#39;node2&#39;},
+              &#39;group&#39;: &#39;edges&#39;}]
             &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test2&#34;, label=&#34;node1.2&#34;)
             &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;, label=&#34;edge1&#34;)
             &gt;&gt;&gt; pprint(e.to_dash())
-            [{&#39;classes&#39;: &#39;test test2&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1.2&#39;}},
-             {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+            [{&#39;classes&#39;: &#39;test test2&#39;,
+              &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1.2&#39;},
+              &#39;group&#39;: &#39;nodes&#39;},
+             {&#39;data&#39;: {&#39;id&#39;: &#39;dd2f9795-aa91-4532-9a00-438ad454799b&#39;,
                        &#39;label&#39;: &#39;edge1&#39;,
                        &#39;source&#39;: &#39;node1&#39;,
-                       &#39;target&#39;: &#39;node2&#39;}}]
+                       &#39;target&#39;: &#39;node2&#39;},
+              &#39;group&#39;: &#39;edges&#39;}]
 
         Note:
             * UUID is assigned if not exist `id` in the `kwargs`.
@@ -510,23 +516,29 @@ Otherwise add the Node Element.</p>
 <pre><code class="language-python-repl">&gt;&gt;&gt; e = Elements()
 &gt;&gt;&gt; e.add(id=&quot;node1&quot;, classes=&quot;test&quot;, label=&quot;node1_label&quot;)
 &gt;&gt;&gt; pprint(e.to_dash())
-[{'classes': 'test', 'data': {'id': 'node1', 'label': 'node1_label'}}]
-&gt;&gt;&gt;
+[{'classes': 'test',
+  'data': {'id': 'node1', 'label': 'node1_label'},
+  'group': 'nodes'}]
 &gt;&gt;&gt; e.add(source=&quot;node1&quot;, target=&quot;node2&quot;)
 &gt;&gt;&gt; pprint(e.to_dash())
-[{'classes': 'test', 'data': {'id': 'node1', 'label': 'node1_label'}},
- {'data': {'id': '87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb',
+[{'classes': 'test',
+  'data': {'id': 'node1', 'label': 'node1_label'},
+  'group': 'nodes'},
+ {'data': {'id': 'dd2f9795-aa91-4532-9a00-438ad454799b',
            'source': 'node1',
-           'target': 'node2'}}]
-&gt;&gt;&gt;
+           'target': 'node2'},
+  'group': 'edges'}]
 &gt;&gt;&gt; e.add(id=&quot;node1&quot;, classes=&quot;test2&quot;, label=&quot;node1.2&quot;)
 &gt;&gt;&gt; e.add(source=&quot;node1&quot;, target=&quot;node2&quot;, label=&quot;edge1&quot;)
 &gt;&gt;&gt; pprint(e.to_dash())
-[{'classes': 'test test2', 'data': {'id': 'node1', 'label': 'node1.2'}},
- {'data': {'id': '87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb',
+[{'classes': 'test test2',
+  'data': {'id': 'node1', 'label': 'node1.2'},
+  'group': 'nodes'},
+ {'data': {'id': 'dd2f9795-aa91-4532-9a00-438ad454799b',
            'label': 'edge1',
            'source': 'node1',
-           'target': 'node2'}}]
+           'target': 'node2'},
+  'group': 'edges'}]
 </code></pre>
 <h2 id="note">Note</h2>
 <ul>
@@ -557,23 +569,29 @@ Otherwise add the Node Element.</p>
         &gt;&gt;&gt; e = Elements()
         &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test&#34;, label=&#34;node1_label&#34;)
         &gt;&gt;&gt; pprint(e.to_dash())
-        [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}}]
-        &gt;&gt;&gt;
+        [{&#39;classes&#39;: &#39;test&#39;,
+          &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;},
+          &#39;group&#39;: &#39;nodes&#39;}]
         &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;)
         &gt;&gt;&gt; pprint(e.to_dash())
-        [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}},
-         {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+        [{&#39;classes&#39;: &#39;test&#39;,
+          &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;},
+          &#39;group&#39;: &#39;nodes&#39;},
+         {&#39;data&#39;: {&#39;id&#39;: &#39;dd2f9795-aa91-4532-9a00-438ad454799b&#39;,
                    &#39;source&#39;: &#39;node1&#39;,
-                   &#39;target&#39;: &#39;node2&#39;}}]
-        &gt;&gt;&gt;
+                   &#39;target&#39;: &#39;node2&#39;},
+          &#39;group&#39;: &#39;edges&#39;}]
         &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test2&#34;, label=&#34;node1.2&#34;)
         &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;, label=&#34;edge1&#34;)
         &gt;&gt;&gt; pprint(e.to_dash())
-        [{&#39;classes&#39;: &#39;test test2&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1.2&#39;}},
-         {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+        [{&#39;classes&#39;: &#39;test test2&#39;,
+          &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1.2&#39;},
+          &#39;group&#39;: &#39;nodes&#39;},
+         {&#39;data&#39;: {&#39;id&#39;: &#39;dd2f9795-aa91-4532-9a00-438ad454799b&#39;,
                    &#39;label&#39;: &#39;edge1&#39;,
                    &#39;source&#39;: &#39;node1&#39;,
-                   &#39;target&#39;: &#39;node2&#39;}}]
+                   &#39;target&#39;: &#39;node2&#39;},
+          &#39;group&#39;: &#39;edges&#39;}]
 
     Note:
         * UUID is assigned if not exist `id` in the `kwargs`.

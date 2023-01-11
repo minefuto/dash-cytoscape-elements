@@ -112,7 +112,7 @@ class Element(BaseElement):
 
 class Node(Element):
 
-    group: str = "nodes"
+    group: str = ""
     data: NodeData = NodeData()
     position: Position = Position()
     selected: bool = False
@@ -135,7 +135,7 @@ class Node(Element):
 
 class Edge(Element):
 
-    group: str = "edges"
+    group: str = ""
     data: EdgeData = EdgeData()
     selected: bool = False
     selectable: bool = True
