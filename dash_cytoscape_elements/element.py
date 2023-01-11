@@ -1,9 +1,6 @@
-import uuid
-from typing import Any, ClassVar, Dict, ForwardRef, List, Optional, Set, Union
+from typing import Any, Dict, List, Set
 
 from pydantic import BaseModel, Field, validator
-
-Elements = ForwardRef("Elements")
 
 
 class BaseElement(BaseModel):
@@ -111,7 +108,6 @@ class Element(BaseElement):
 
 
 class Node(Element):
-    keys: ClassVar[Set[str]] = {"id"}
 
     group: str = "nodes"
     data: NodeData = NodeData()
@@ -135,7 +131,6 @@ class Node(Element):
 
 
 class Edge(Element):
-    keys: ClassVar[Set[str]] = {"source", "target"}
 
     group: str = "edges"
     data: EdgeData = EdgeData()
@@ -155,88 +150,3 @@ class Edge(Element):
 
     def __str__(self) -> str:
         return 'Edge(id="{}")'.format(self.data.id)
-
-
-class Elements(BaseModel):
-    node: ClassVar[Node] = Node
-    edge: ClassVar[Edge] = Edge
-
-    __root__: List[Union[node, edge]] = []
-
-    def __str__(self) -> str:
-        return "[{}]".format(", ".join([str(e) for e in self.__root__]))
-
-    def __iter__(self):
-        return iter(self.__root__)
-
-    def _append(self, element: Element):
-        self.__root__.append(element)
-
-    def _remove(self, element: Element):
-        self.__root__.remove(element)
-
-    def to_json(self) -> str:
-        if self.__root__:
-            return self.json(exclude_defaults=True, indent=4, by_alias=True)
-        return ""
-
-    def to_dict(self) -> List:
-        elements_dict = self.dict(exclude_defaults=True, by_alias=True)
-        if elements_dict:
-            return elements_dict["__root__"]
-        return []
-
-    def filter(self, **kwargs: Any) -> Elements:
-        elements = Elements()
-        for e in self:
-            if e.is_match(**kwargs):
-                elements._append(e)
-        return elements
-
-    def get(self, **kwargs: Any) -> Optional[Element]:
-        if kwargs.keys() >= self.node.keys:
-            key_dict = {k: kwargs[k] for k in self.node.keys}
-            for e in self.filter(group="nodes"):
-                if e.is_match(**key_dict):
-                    return e
-
-        if kwargs.keys() >= self.edge.keys:
-            key_dict = {k: kwargs[k] for k in self.edge.keys}
-            for e in self.filter(group="edges"):
-                if e.is_match(**key_dict):
-                    return e
-
-        return None
-
-    def add(self, **kwargs: Any):
-        element = self.get(**kwargs)
-
-        if element:
-            if "id" in kwargs:
-                for e in self.filter(id=kwargs["id"]):
-                    if e != element:
-                        return
-            element.add(**kwargs)
-            return
-
-        if "source" in kwargs and "target" in kwargs:
-            element = self.edge()
-        else:
-            element = self.node()
-
-        if "id" in kwargs:
-            if self.filter(id=kwargs["id"]).__root__:
-                return
-            element.add(**kwargs)
-        else:
-            element.add(**kwargs, id=str(uuid.uuid4()))
-
-        self._append(element)
-
-    def remove(self, **kwargs: Any):
-        element = self.get(**kwargs)
-        if element:
-            self._remove(element)
-
-
-Elements.update_forward_refs()

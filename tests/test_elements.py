@@ -1,26 +1,27 @@
 import pytest
 
-from dash_cytoscape_elements import Edge, Elements, Node
+from dash_cytoscape_elements import Elements
+from dash_cytoscape_elements.element import Edge, Node
 
 
 @pytest.fixture
 def init():
-    elements = Elements.parse_file("./tests/mock_data/init.json")
+    elements = Elements.from_file("./tests/mock_data/init.json")
     return elements
 
 
 @pytest.fixture
 def conversion():
-    elements = Elements.parse_file("./tests/mock_data/conversion.json")
+    elements = Elements.from_file("./tests/mock_data/conversion.json")
     return elements
 
 
 def test_filter_success(init):
     filter = init.filter(group="nodes")
-    assert filter == Elements.parse_file("./tests/mock_data/filter_success.json")
+    assert filter == Elements.from_file("./tests/mock_data/filter_success.json")
 
     filter_classes = init.filter(classes="node3.1")
-    assert filter_classes == Elements.parse_file(
+    assert filter_classes == Elements.from_file(
         "./tests/mock_data/filter_success_classes.json"
     )
 
@@ -79,13 +80,13 @@ def test_add_node_success(init):
         classes="node1 node2 node3",
         scratch={"scratch1_key": "scratch1_value", "scratch2_key": "scratch2_value"},
     )
-    assert init == Elements.parse_file("./tests/mock_data/add_node_success.json")
+    assert init == Elements.from_file("./tests/mock_data/add_node_success.json")
 
 
 def test_add_node_fail(init):
     init.add(id="node1", no_data="no_data")
     init.add(id="node1", group="edges")
-    assert init == Elements.parse_file("./tests/mock_data/init.json")
+    assert init == Elements.from_file("./tests/mock_data/init.json")
 
 
 def test_add_edge_success(init):
@@ -119,41 +120,41 @@ def test_add_edge_success(init):
         classes="edge1.1",
         scratch={"scratch1_key": "scratch1_value", "scratch2_key": "scratch2_value"},
     )
-    assert init == Elements.parse_file("./tests/mock_data/add_edge_success.json")
+    assert init == Elements.from_file("./tests/mock_data/add_edge_success.json")
 
 
 def test_add_edge_fail(init):
     init.add(parent="edge1", source="node1", target="node3")
     init.add(id="edge1", source="node1", target="node3")
     init.add(id="edge1", group="nodes")
-    assert init == Elements.parse_file("./tests/mock_data/init.json")
+    assert init == Elements.from_file("./tests/mock_data/init.json")
 
 
 def test_remove_node_success(init):
     init.remove(id="node2")
-    assert init == Elements.parse_file("./tests/mock_data/remove_node_success.json")
+    assert init == Elements.from_file("./tests/mock_data/remove_node_success.json")
 
 
 def test_remove_node_fail(init):
     init.remove(id="node4")
     init.remove(parent="node1_parent")
-    assert init == Elements.parse_file("./tests/mock_data/init.json")
+    assert init == Elements.from_file("./tests/mock_data/init.json")
 
 
 def test_remove_edge_success(init):
     init.remove(source="node1", target="node3")
-    assert init == Elements.parse_file("./tests/mock_data/remove_edge_success.json")
+    assert init == Elements.from_file("./tests/mock_data/remove_edge_success.json")
 
 
 def test_remove_edge_fail(init):
     init.remove(source="node3", target="node1")
     init.remove(source="node1")
-    assert init == Elements.parse_file("./tests/mock_data/init.json")
+    assert init == Elements.from_file("./tests/mock_data/init.json")
 
 
 def test_to_json(conversion):
-    assert Elements.parse_raw(conversion.to_json()) == conversion
+    assert Elements.from_json(conversion.to_json()) == conversion
 
 
-def test_to_dict(conversion):
-    assert Elements.parse_obj(conversion.to_dict()) == conversion
+def test_to_dash(conversion):
+    assert Elements.from_dash(conversion.to_dash()) == conversion
