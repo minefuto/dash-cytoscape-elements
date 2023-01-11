@@ -8,9 +8,9 @@ Elements = ForwardRef("Elements")
 
 class BaseElement(BaseModel):
     class Config:
-        validate_assignment = True
-        allow_population_by_field_name = True
-        extra = "forbid"
+        validate_assignment: bool = True
+        allow_population_by_field_name: bool = True
+        extra: str = "forbid"
 
     def is_match_attribute(self, key: str, value: Any) -> bool:
         if hasattr(self, key):
@@ -35,6 +35,7 @@ class BaseElement(BaseModel):
             for v in self.__dict__.values():
                 if isinstance(v, BaseElement):
                     return v.is_match_attribute(key, value)
+            return False
 
     def add_attribute(self, key: str, value: Any):
         if hasattr(self, key):
@@ -86,7 +87,7 @@ class EdgeData(BaseElement):
 
 
 class Element(BaseElement):
-    def is_match(self, **kwargs) -> bool:
+    def is_match(self, **kwargs: Any) -> bool:
         for k, v in kwargs.items():
             if k == "classes":
                 return set(self.classes.split()) >= set(v.split())
@@ -94,16 +95,14 @@ class Element(BaseElement):
                 return False
         return True
 
-    def _add_classes(self, value):
+    def _add_classes(self, value: str):
         classes = self.classes.split()
         for c in value.split():
             if not (c in classes):
-                if self.classes:
-                    self.classes = self.classes + " {}".format(c)
-                else:
-                    self.classes = c
+                classes.append(c)
+        self.classes = " ".join([c for c in classes])
 
-    def add(self, **kwargs):
+    def add(self, **kwargs: Any):
         for k, v in kwargs.items():
             if k == "classes":
                 self._add_classes(v)
@@ -132,7 +131,7 @@ class Node(Element):
         return group
 
     def __str__(self) -> str:
-        return "Node(id=\"{}\")".format(self.data.id)
+        return 'Node(id="{}")'.format(self.data.id)
 
 
 class Edge(Element):
@@ -155,7 +154,7 @@ class Edge(Element):
         return group
 
     def __str__(self) -> str:
-        return "Edge(id=\"{}\")".format(self.data.id)
+        return 'Edge(id="{}")'.format(self.data.id)
 
 
 class Elements(BaseModel):
@@ -170,10 +169,10 @@ class Elements(BaseModel):
     def __iter__(self):
         return iter(self.__root__)
 
-    def _append(self, element):
+    def _append(self, element: Element):
         self.__root__.append(element)
 
-    def _remove(self, element):
+    def _remove(self, element: Element):
         self.__root__.remove(element)
 
     def to_json(self) -> str:
@@ -187,14 +186,14 @@ class Elements(BaseModel):
             return elements_dict["__root__"]
         return []
 
-    def filter(self, **kwargs) -> Elements:
+    def filter(self, **kwargs: Any) -> Elements:
         elements = Elements()
         for e in self:
             if e.is_match(**kwargs):
                 elements._append(e)
         return elements
 
-    def get(self, **kwargs) -> Optional[Element]:
+    def get(self, **kwargs: Any) -> Optional[Element]:
         if kwargs.keys() >= self.node.keys:
             key_dict = {k: kwargs[k] for k in self.node.keys}
             for e in self.filter(group="nodes"):
@@ -209,7 +208,7 @@ class Elements(BaseModel):
 
         return None
 
-    def add(self, **kwargs):
+    def add(self, **kwargs: Any):
         element = self.get(**kwargs)
 
         if element:
@@ -234,7 +233,7 @@ class Elements(BaseModel):
 
         self._append(element)
 
-    def remove(self, **kwargs):
+    def remove(self, **kwargs: Any):
         element = self.get(**kwargs)
         if element:
             self._remove(element)
