@@ -7,6 +7,8 @@ default: format doc
 doc:
 	@printf "pdoc:\n"
 	@PYTHONWARNINGS=ignore ${POETRY} run pdoc dash_cytoscape_elements/ --html -o ./docs --force
+	@mv ./docs/dash_cytoscape_elements/* ./docs/
+	@rm -r ./docs/dash_cytoscape_elements/
 
 format:
 	@printf "black:\n"
