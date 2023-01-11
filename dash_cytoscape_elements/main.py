@@ -131,6 +131,9 @@ class Node(Element):
             return "nodes"
         return group
 
+    def __str__(self) -> str:
+        return "Node(id=\"{}\")".format(self.data.id)
+
 
 class Edge(Element):
     keys: ClassVar[Set[str]] = {"source", "target"}
@@ -151,12 +154,18 @@ class Edge(Element):
             return "edges"
         return group
 
+    def __str__(self) -> str:
+        return "Edge(id=\"{}\")".format(self.data.id)
+
 
 class Elements(BaseModel):
     node: ClassVar[Node] = Node
     edge: ClassVar[Edge] = Edge
 
     __root__: List[Union[node, edge]] = []
+
+    def __str__(self) -> str:
+        return "[{}]".format(", ".join([str(e) for e in self.__root__]))
 
     def __iter__(self):
         return iter(self.__root__)
