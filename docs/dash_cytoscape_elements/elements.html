@@ -1,0 +1,1211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>dash_cytoscape_elements.elements API documentation</title>
+<meta name="description" content="The main module of this package." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dash_cytoscape_elements.elements</code></h1>
+</header>
+<section id="section-intro">
+<p>The main module of this package.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;The main module of this package.&#34;&#34;&#34;
+import uuid
+from typing import Any, ClassVar, ForwardRef, List, Optional, Set, Union
+
+from pydantic import BaseModel
+
+from .element import Edge, Element, Node
+
+Elements = ForwardRef(&#34;Elements&#34;)
+
+
+class Elements(BaseModel):
+    &#34;&#34;&#34;This class is a List of Element(Node/Edge) object.&#34;&#34;&#34;
+
+    node: ClassVar[Node] = Node
+    &#34;&#34;&#34;The Node class to be stored in the Elements.&#34;&#34;&#34;
+    node_keys: ClassVar[Set[str]] = {&#34;id&#34;}
+    &#34;&#34;&#34;The parameters that uniquely identify the specific Node object in the Elements.
+
+    default is `{ &#34;id&#34; }`
+    &#34;&#34;&#34;
+    edge: ClassVar[Edge] = Edge
+    &#34;&#34;&#34;The Edge class to be stored in the Elements.&#34;&#34;&#34;
+    edge_keys: ClassVar[Set[str]] = {&#34;source&#34;, &#34;target&#34;}
+    &#34;&#34;&#34;The parameters that uniquely identify the specific Edge object in the Elements.
+
+    default is `{ &#34;source&#34;, &#34;target&#34; }`
+    &#34;&#34;&#34;
+
+    __root__: List[Union[node, edge]] = []
+
+    def __str__(self) -&gt; str:
+        return &#34;[{}]&#34;.format(&#34;, &#34;.join([str(e) for e in self.__root__]))
+
+    def __iter__(self):
+        return iter(self.__root__)
+
+    def _append(self, element: Element):
+        self.__root__.append(element)
+
+    def _remove(self, element: Element):
+        self.__root__.remove(element)
+
+    @classmethod
+    def from_dash(cls, data: List) -&gt; Elements:
+        &#34;&#34;&#34;Create the Elements from the element object of Dash Cytoscape format.
+
+        Args:
+            data (List): no comment
+
+        Returns:
+            Elements: no comment
+
+        Notes:
+            * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
+        &#34;&#34;&#34;
+        return cls.parse_obj(data)
+
+    @classmethod
+    def from_file(cls, path: str) -&gt; Elements:
+        &#34;&#34;&#34;Create the Elements from the json file of Cytoscape.js format.
+
+        Args:
+            path (str): no comment
+
+        Returns:
+            Elements: no comment
+
+        Notes:
+            * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+        &#34;&#34;&#34;
+        return cls.parse_file(path)
+
+    @classmethod
+    def from_json(cls, data: str) -&gt; Elements:
+        &#34;&#34;&#34;Create the Elements from the json string of Cytoscape.js format.
+
+        Args:
+            data (str): no comment
+
+        Returns:
+            Elements: no comment
+
+        Notes:
+            * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+        &#34;&#34;&#34;
+        return cls.parse_raw(data)
+
+    def to_dash(self) -&gt; List:
+        &#34;&#34;&#34;Create the element object of Dash Cytoscape format.
+
+        Returns:
+            List: no comment
+
+        Notes:
+            * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
+        &#34;&#34;&#34;
+        elements_dict = self.dict(exclude_defaults=True, by_alias=True)
+        if elements_dict:
+            return elements_dict[&#34;__root__&#34;]
+        return []
+
+    def to_json(self) -&gt; str:
+        &#34;&#34;&#34;Create the json raw string of Cytoscape.js format.
+
+        Returns:
+            str: no comment
+
+        Notes:
+            * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+        &#34;&#34;&#34;
+        if self.__root__:
+            return self.json(exclude_defaults=True, indent=4, by_alias=True)
+        return &#34;&#34;
+
+    def filter(self, **kwargs: Any) -&gt; Elements:
+        &#34;&#34;&#34;Get the Elements contains Element(Node/Edge) objects that match kwargs.
+
+        Args:
+            **kwargs (Any): no comment
+
+        Returns:
+            Elements: no comment
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;, parent=&#34;p1&#34;, classes=&#34;test test2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;node2&#34;, parent=&#34;p1&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;, classes=&#34;test&#34;)
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt; print(e.filter(classes=&#34;test&#34;))
+            [Node(id=&#34;node1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt; print(e.filter(parent=&#34;p1&#34;))
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;)]
+
+        Note:
+            * Match criteria of filter
+                * List/Dict/Set and `classes`: include value or not
+                * The others Type: exact match value or not
+        &#34;&#34;&#34;
+        elements = Elements()
+        for e in self:
+            if e.is_match(**kwargs):
+                elements._append(e)
+        return elements
+
+    def get(self, **kwargs: Any) -&gt; Optional[Element]:
+        &#34;&#34;&#34;Get the Element(Node/Edge) object in the Elements matching the `kwargs`.
+
+        Must specify the values that uniquely identify the Element in the `kwargs`.
+        The others parameters are ignored.
+
+        Args:
+            **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+
+        Returns:
+            Optional[Element]:
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;)
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e.get(id=&#34;node1&#34;))
+            Node(id=&#34;node1&#34;)
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e.get(source=&#34;node1&#34;, target=&#34;node2&#34;))
+            Edge(id=&#34;edge1&#34;)
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e.get(id=&#34;node3&#34;))
+            None
+        &#34;&#34;&#34;
+        if kwargs.keys() &gt;= self.node_keys:
+            key_dict = {k: kwargs[k] for k in self.node_keys}
+            for e in self.filter(group=&#34;nodes&#34;):
+                if e.is_match(**key_dict):
+                    return e
+
+        if kwargs.keys() &gt;= self.edge_keys:
+            key_dict = {k: kwargs[k] for k in self.edge_keys}
+            for e in self.filter(group=&#34;edges&#34;):
+                if e.is_match(**key_dict):
+                    return e
+
+        return None
+
+    def add(self, **kwargs: Any):
+        &#34;&#34;&#34;Add the Element(Node/Edge) object to the Elements.
+
+        If exist `source` and `edge` in `kwargs`, add the Edge Element.
+        Otherwise add the Node Element.
+
+        Args:
+            **kwargs (Any): each class variables in `dash_cytoscape_elements.element`
+
+        Returns:
+            Optional[Element]:
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test&#34;, label=&#34;node1_label&#34;)
+            &gt;&gt;&gt; pprint(e.to_dash())
+            [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}}]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;)
+            &gt;&gt;&gt; pprint(e.to_dash())
+            [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}},
+             {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+                       &#39;source&#39;: &#39;node1&#39;,
+                       &#39;target&#39;: &#39;node2&#39;}}]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test2&#34;, label=&#34;node1.2&#34;)
+            &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;, label=&#34;edge1&#34;)
+            &gt;&gt;&gt; pprint(e.to_dash())
+            [{&#39;classes&#39;: &#39;test test2&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1.2&#39;}},
+             {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+                       &#39;label&#39;: &#39;edge1&#39;,
+                       &#39;source&#39;: &#39;node1&#39;,
+                       &#39;target&#39;: &#39;node2&#39;}}]
+
+        Note:
+            * UUID is assigned if not exist `id` in the `kwargs`.
+            * If already exist Element, update the Element(Node/Edge) parameters.
+                * List/Dict/Set and `classes`: append value
+                * The others Type: replace value
+        &#34;&#34;&#34;
+        element = self.get(**kwargs)
+
+        if element:
+            if &#34;id&#34; in kwargs:
+                for e in self.filter(id=kwargs[&#34;id&#34;]):
+                    if e != element:
+                        return
+            element.add(**kwargs)
+            return
+
+        if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs:
+            element = self.edge()
+        else:
+            element = self.node()
+
+        if &#34;id&#34; in kwargs:
+            if self.filter(id=kwargs[&#34;id&#34;]).__root__:
+                return
+            element.add(**kwargs)
+        else:
+            element.add(**kwargs, id=str(uuid.uuid4()))
+
+        self._append(element)
+
+    def remove(self, **kwargs: Any):
+        &#34;&#34;&#34;Remove the Element(Node/Edge) object in the Elements.
+
+        Must specify the values that uniquely identify the Element in the `kwargs`.
+        The others parameters are ignored.
+
+        Args:
+            **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;)
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; e.remove(id=&#34;node1&#34;)
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; e.remove(id=&#34;node3&#34;)
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+        &#34;&#34;&#34;
+        element = self.get(**kwargs)
+        if element:
+            self._remove(element)
+
+
+Elements.update_forward_refs()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="dash_cytoscape_elements.elements.Elements"><code class="flex name class">
+<span>class <span class="ident">Elements</span></span>
+<span>(</span><span>**data: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This class is a List of Element(Node/Edge) object.</p>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Elements(BaseModel):
+    &#34;&#34;&#34;This class is a List of Element(Node/Edge) object.&#34;&#34;&#34;
+
+    node: ClassVar[Node] = Node
+    &#34;&#34;&#34;The Node class to be stored in the Elements.&#34;&#34;&#34;
+    node_keys: ClassVar[Set[str]] = {&#34;id&#34;}
+    &#34;&#34;&#34;The parameters that uniquely identify the specific Node object in the Elements.
+
+    default is `{ &#34;id&#34; }`
+    &#34;&#34;&#34;
+    edge: ClassVar[Edge] = Edge
+    &#34;&#34;&#34;The Edge class to be stored in the Elements.&#34;&#34;&#34;
+    edge_keys: ClassVar[Set[str]] = {&#34;source&#34;, &#34;target&#34;}
+    &#34;&#34;&#34;The parameters that uniquely identify the specific Edge object in the Elements.
+
+    default is `{ &#34;source&#34;, &#34;target&#34; }`
+    &#34;&#34;&#34;
+
+    __root__: List[Union[node, edge]] = []
+
+    def __str__(self) -&gt; str:
+        return &#34;[{}]&#34;.format(&#34;, &#34;.join([str(e) for e in self.__root__]))
+
+    def __iter__(self):
+        return iter(self.__root__)
+
+    def _append(self, element: Element):
+        self.__root__.append(element)
+
+    def _remove(self, element: Element):
+        self.__root__.remove(element)
+
+    @classmethod
+    def from_dash(cls, data: List) -&gt; Elements:
+        &#34;&#34;&#34;Create the Elements from the element object of Dash Cytoscape format.
+
+        Args:
+            data (List): no comment
+
+        Returns:
+            Elements: no comment
+
+        Notes:
+            * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
+        &#34;&#34;&#34;
+        return cls.parse_obj(data)
+
+    @classmethod
+    def from_file(cls, path: str) -&gt; Elements:
+        &#34;&#34;&#34;Create the Elements from the json file of Cytoscape.js format.
+
+        Args:
+            path (str): no comment
+
+        Returns:
+            Elements: no comment
+
+        Notes:
+            * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+        &#34;&#34;&#34;
+        return cls.parse_file(path)
+
+    @classmethod
+    def from_json(cls, data: str) -&gt; Elements:
+        &#34;&#34;&#34;Create the Elements from the json string of Cytoscape.js format.
+
+        Args:
+            data (str): no comment
+
+        Returns:
+            Elements: no comment
+
+        Notes:
+            * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+        &#34;&#34;&#34;
+        return cls.parse_raw(data)
+
+    def to_dash(self) -&gt; List:
+        &#34;&#34;&#34;Create the element object of Dash Cytoscape format.
+
+        Returns:
+            List: no comment
+
+        Notes:
+            * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
+        &#34;&#34;&#34;
+        elements_dict = self.dict(exclude_defaults=True, by_alias=True)
+        if elements_dict:
+            return elements_dict[&#34;__root__&#34;]
+        return []
+
+    def to_json(self) -&gt; str:
+        &#34;&#34;&#34;Create the json raw string of Cytoscape.js format.
+
+        Returns:
+            str: no comment
+
+        Notes:
+            * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+        &#34;&#34;&#34;
+        if self.__root__:
+            return self.json(exclude_defaults=True, indent=4, by_alias=True)
+        return &#34;&#34;
+
+    def filter(self, **kwargs: Any) -&gt; Elements:
+        &#34;&#34;&#34;Get the Elements contains Element(Node/Edge) objects that match kwargs.
+
+        Args:
+            **kwargs (Any): no comment
+
+        Returns:
+            Elements: no comment
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;, parent=&#34;p1&#34;, classes=&#34;test test2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;node2&#34;, parent=&#34;p1&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;, classes=&#34;test&#34;)
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt; print(e.filter(classes=&#34;test&#34;))
+            [Node(id=&#34;node1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt; print(e.filter(parent=&#34;p1&#34;))
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;)]
+
+        Note:
+            * Match criteria of filter
+                * List/Dict/Set and `classes`: include value or not
+                * The others Type: exact match value or not
+        &#34;&#34;&#34;
+        elements = Elements()
+        for e in self:
+            if e.is_match(**kwargs):
+                elements._append(e)
+        return elements
+
+    def get(self, **kwargs: Any) -&gt; Optional[Element]:
+        &#34;&#34;&#34;Get the Element(Node/Edge) object in the Elements matching the `kwargs`.
+
+        Must specify the values that uniquely identify the Element in the `kwargs`.
+        The others parameters are ignored.
+
+        Args:
+            **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+
+        Returns:
+            Optional[Element]:
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;)
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e.get(id=&#34;node1&#34;))
+            Node(id=&#34;node1&#34;)
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e.get(source=&#34;node1&#34;, target=&#34;node2&#34;))
+            Edge(id=&#34;edge1&#34;)
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e.get(id=&#34;node3&#34;))
+            None
+        &#34;&#34;&#34;
+        if kwargs.keys() &gt;= self.node_keys:
+            key_dict = {k: kwargs[k] for k in self.node_keys}
+            for e in self.filter(group=&#34;nodes&#34;):
+                if e.is_match(**key_dict):
+                    return e
+
+        if kwargs.keys() &gt;= self.edge_keys:
+            key_dict = {k: kwargs[k] for k in self.edge_keys}
+            for e in self.filter(group=&#34;edges&#34;):
+                if e.is_match(**key_dict):
+                    return e
+
+        return None
+
+    def add(self, **kwargs: Any):
+        &#34;&#34;&#34;Add the Element(Node/Edge) object to the Elements.
+
+        If exist `source` and `edge` in `kwargs`, add the Edge Element.
+        Otherwise add the Node Element.
+
+        Args:
+            **kwargs (Any): each class variables in `dash_cytoscape_elements.element`
+
+        Returns:
+            Optional[Element]:
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test&#34;, label=&#34;node1_label&#34;)
+            &gt;&gt;&gt; pprint(e.to_dash())
+            [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}}]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;)
+            &gt;&gt;&gt; pprint(e.to_dash())
+            [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}},
+             {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+                       &#39;source&#39;: &#39;node1&#39;,
+                       &#39;target&#39;: &#39;node2&#39;}}]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test2&#34;, label=&#34;node1.2&#34;)
+            &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;, label=&#34;edge1&#34;)
+            &gt;&gt;&gt; pprint(e.to_dash())
+            [{&#39;classes&#39;: &#39;test test2&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1.2&#39;}},
+             {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+                       &#39;label&#39;: &#39;edge1&#39;,
+                       &#39;source&#39;: &#39;node1&#39;,
+                       &#39;target&#39;: &#39;node2&#39;}}]
+
+        Note:
+            * UUID is assigned if not exist `id` in the `kwargs`.
+            * If already exist Element, update the Element(Node/Edge) parameters.
+                * List/Dict/Set and `classes`: append value
+                * The others Type: replace value
+        &#34;&#34;&#34;
+        element = self.get(**kwargs)
+
+        if element:
+            if &#34;id&#34; in kwargs:
+                for e in self.filter(id=kwargs[&#34;id&#34;]):
+                    if e != element:
+                        return
+            element.add(**kwargs)
+            return
+
+        if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs:
+            element = self.edge()
+        else:
+            element = self.node()
+
+        if &#34;id&#34; in kwargs:
+            if self.filter(id=kwargs[&#34;id&#34;]).__root__:
+                return
+            element.add(**kwargs)
+        else:
+            element.add(**kwargs, id=str(uuid.uuid4()))
+
+        self._append(element)
+
+    def remove(self, **kwargs: Any):
+        &#34;&#34;&#34;Remove the Element(Node/Edge) object in the Elements.
+
+        Must specify the values that uniquely identify the Element in the `kwargs`.
+        The others parameters are ignored.
+
+        Args:
+            **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;)
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; e.remove(id=&#34;node1&#34;)
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; e.remove(id=&#34;node3&#34;)
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+        &#34;&#34;&#34;
+        element = self.get(**kwargs)
+        if element:
+            self._remove(element)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pydantic.main.BaseModel</li>
+<li>pydantic.utils.Representation</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dash_cytoscape_elements.elements.Elements.edge"><code class="name">var <span class="ident">edge</span> : ClassVar[<a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a>]</code></dt>
+<dd>
+<div class="desc"><p>The Edge class to be stored in the Elements.</p></div>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.edge_keys"><code class="name">var <span class="ident">edge_keys</span> : ClassVar[Set[str]]</code></dt>
+<dd>
+<div class="desc"><p>The parameters that uniquely identify the specific Edge object in the Elements.</p>
+<p>default is <code>{ "source", "target" }</code></p></div>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.node"><code class="name">var <span class="ident">node</span> : ClassVar[<a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a>]</code></dt>
+<dd>
+<div class="desc"><p>The Node class to be stored in the Elements.</p></div>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.node_keys"><code class="name">var <span class="ident">node_keys</span> : ClassVar[Set[str]]</code></dt>
+<dd>
+<div class="desc"><p>The parameters that uniquely identify the specific Node object in the Elements.</p>
+<p>default is <code>{ "id" }</code></p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="dash_cytoscape_elements.elements.Elements.from_dash"><code class="name flex">
+<span>def <span class="ident">from_dash</span></span>(<span>data: List[~T]) ‑> <a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create the Elements from the element object of Dash Cytoscape format.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>List</code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<ul>
+<li><a href="https://dash.plotly.com/cytoscape/reference">Dash Cytoscape format</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_dash(cls, data: List) -&gt; Elements:
+    &#34;&#34;&#34;Create the Elements from the element object of Dash Cytoscape format.
+
+    Args:
+        data (List): no comment
+
+    Returns:
+        Elements: no comment
+
+    Notes:
+        * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
+    &#34;&#34;&#34;
+    return cls.parse_obj(data)</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.from_file"><code class="name flex">
+<span>def <span class="ident">from_file</span></span>(<span>path: str) ‑> <a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create the Elements from the json file of Cytoscape.js format.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<ul>
+<li><a href="https://js.cytoscape.org/#notation/elements-json">Cytoscape.js format</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_file(cls, path: str) -&gt; Elements:
+    &#34;&#34;&#34;Create the Elements from the json file of Cytoscape.js format.
+
+    Args:
+        path (str): no comment
+
+    Returns:
+        Elements: no comment
+
+    Notes:
+        * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+    &#34;&#34;&#34;
+    return cls.parse_file(path)</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.from_json"><code class="name flex">
+<span>def <span class="ident">from_json</span></span>(<span>data: str) ‑> <a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create the Elements from the json string of Cytoscape.js format.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>str</code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<ul>
+<li><a href="https://js.cytoscape.org/#notation/elements-json">Cytoscape.js format</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_json(cls, data: str) -&gt; Elements:
+    &#34;&#34;&#34;Create the Elements from the json string of Cytoscape.js format.
+
+    Args:
+        data (str): no comment
+
+    Returns:
+        Elements: no comment
+
+    Notes:
+        * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+    &#34;&#34;&#34;
+    return cls.parse_raw(data)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="dash_cytoscape_elements.elements.Elements.add"><code class="name flex">
+<span>def <span class="ident">add</span></span>(<span>self, **kwargs: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add the Element(Node/Edge) object to the Elements.</p>
+<p>If exist <code>source</code> and <code>edge</code> in <code>kwargs</code>, add the Edge Element.
+Otherwise add the Node Element.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
+<dd>each class variables in <code><a title="dash_cytoscape_elements.element" href="element.html">dash_cytoscape_elements.element</a></code></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Optional[Element]:</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; e = Elements()
+&gt;&gt;&gt; e.add(id=&quot;node1&quot;, classes=&quot;test&quot;, label=&quot;node1_label&quot;)
+&gt;&gt;&gt; pprint(e.to_dash())
+[{'classes': 'test', 'data': {'id': 'node1', 'label': 'node1_label'}}]
+&gt;&gt;&gt;
+&gt;&gt;&gt; e.add(source=&quot;node1&quot;, target=&quot;node2&quot;)
+&gt;&gt;&gt; pprint(e.to_dash())
+[{'classes': 'test', 'data': {'id': 'node1', 'label': 'node1_label'}},
+ {'data': {'id': '87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb',
+           'source': 'node1',
+           'target': 'node2'}}]
+&gt;&gt;&gt;
+&gt;&gt;&gt; e.add(id=&quot;node1&quot;, classes=&quot;test2&quot;, label=&quot;node1.2&quot;)
+&gt;&gt;&gt; e.add(source=&quot;node1&quot;, target=&quot;node2&quot;, label=&quot;edge1&quot;)
+&gt;&gt;&gt; pprint(e.to_dash())
+[{'classes': 'test test2', 'data': {'id': 'node1', 'label': 'node1.2'}},
+ {'data': {'id': '87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb',
+           'label': 'edge1',
+           'source': 'node1',
+           'target': 'node2'}}]
+</code></pre>
+<h2 id="note">Note</h2>
+<ul>
+<li>UUID is assigned if not exist <code>id</code> in the <code>kwargs</code>.</li>
+<li>If already exist Element, update the Element(Node/Edge) parameters.<ul>
+<li>List/Dict/Set and <code>classes</code>: append value</li>
+<li>The others Type: replace value</li>
+</ul>
+</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add(self, **kwargs: Any):
+    &#34;&#34;&#34;Add the Element(Node/Edge) object to the Elements.
+
+    If exist `source` and `edge` in `kwargs`, add the Edge Element.
+    Otherwise add the Node Element.
+
+    Args:
+        **kwargs (Any): each class variables in `dash_cytoscape_elements.element`
+
+    Returns:
+        Optional[Element]:
+
+    Examples:
+        &gt;&gt;&gt; e = Elements()
+        &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test&#34;, label=&#34;node1_label&#34;)
+        &gt;&gt;&gt; pprint(e.to_dash())
+        [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}}]
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;)
+        &gt;&gt;&gt; pprint(e.to_dash())
+        [{&#39;classes&#39;: &#39;test&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1_label&#39;}},
+         {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+                   &#39;source&#39;: &#39;node1&#39;,
+                   &#39;target&#39;: &#39;node2&#39;}}]
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; e.add(id=&#34;node1&#34;, classes=&#34;test2&#34;, label=&#34;node1.2&#34;)
+        &gt;&gt;&gt; e.add(source=&#34;node1&#34;, target=&#34;node2&#34;, label=&#34;edge1&#34;)
+        &gt;&gt;&gt; pprint(e.to_dash())
+        [{&#39;classes&#39;: &#39;test test2&#39;, &#39;data&#39;: {&#39;id&#39;: &#39;node1&#39;, &#39;label&#39;: &#39;node1.2&#39;}},
+         {&#39;data&#39;: {&#39;id&#39;: &#39;87cbd597-63d5-4f5d-9ce2-6ee6976cb4fb&#39;,
+                   &#39;label&#39;: &#39;edge1&#39;,
+                   &#39;source&#39;: &#39;node1&#39;,
+                   &#39;target&#39;: &#39;node2&#39;}}]
+
+    Note:
+        * UUID is assigned if not exist `id` in the `kwargs`.
+        * If already exist Element, update the Element(Node/Edge) parameters.
+            * List/Dict/Set and `classes`: append value
+            * The others Type: replace value
+    &#34;&#34;&#34;
+    element = self.get(**kwargs)
+
+    if element:
+        if &#34;id&#34; in kwargs:
+            for e in self.filter(id=kwargs[&#34;id&#34;]):
+                if e != element:
+                    return
+        element.add(**kwargs)
+        return
+
+    if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs:
+        element = self.edge()
+    else:
+        element = self.node()
+
+    if &#34;id&#34; in kwargs:
+        if self.filter(id=kwargs[&#34;id&#34;]).__root__:
+            return
+        element.add(**kwargs)
+    else:
+        element.add(**kwargs, id=str(uuid.uuid4()))
+
+    self._append(element)</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.filter"><code class="name flex">
+<span>def <span class="ident">filter</span></span>(<span>self, **kwargs: Any) ‑> <a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the Elements contains Element(Node/Edge) objects that match kwargs.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; e = Elements()
+&gt;&gt;&gt; e.add(id=&quot;node1&quot;, parent=&quot;p1&quot;, classes=&quot;test test2&quot;)
+&gt;&gt;&gt; e.add(id=&quot;node2&quot;, parent=&quot;p1&quot;)
+&gt;&gt;&gt; e.add(id=&quot;edge1&quot;, source=&quot;node1&quot;, target=&quot;node2&quot;)
+&gt;&gt;&gt; e.add(id=&quot;edge2&quot;, source=&quot;node2&quot;, target=&quot;node1&quot;, classes=&quot;test&quot;)
+&gt;&gt;&gt;
+&gt;&gt;&gt; print(e)
+[Node(id=&quot;node1&quot;), Node(id=&quot;node2&quot;), Edge(id=&quot;edge1&quot;), Edge(id=&quot;edge2&quot;)]
+&gt;&gt;&gt; print(e.filter(classes=&quot;test&quot;))
+[Node(id=&quot;node1&quot;), Edge(id=&quot;edge2&quot;)]
+&gt;&gt;&gt; print(e.filter(parent=&quot;p1&quot;))
+[Node(id=&quot;node1&quot;), Node(id=&quot;node2&quot;)]
+</code></pre>
+<h2 id="note">Note</h2>
+<ul>
+<li>Match criteria of filter<ul>
+<li>List/Dict/Set and <code>classes</code>: include value or not</li>
+<li>The others Type: exact match value or not</li>
+</ul>
+</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def filter(self, **kwargs: Any) -&gt; Elements:
+    &#34;&#34;&#34;Get the Elements contains Element(Node/Edge) objects that match kwargs.
+
+    Args:
+        **kwargs (Any): no comment
+
+    Returns:
+        Elements: no comment
+
+    Examples:
+        &gt;&gt;&gt; e = Elements()
+        &gt;&gt;&gt; e.add(id=&#34;node1&#34;, parent=&#34;p1&#34;, classes=&#34;test test2&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;node2&#34;, parent=&#34;p1&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;, classes=&#34;test&#34;)
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; print(e)
+        [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+        &gt;&gt;&gt; print(e.filter(classes=&#34;test&#34;))
+        [Node(id=&#34;node1&#34;), Edge(id=&#34;edge2&#34;)]
+        &gt;&gt;&gt; print(e.filter(parent=&#34;p1&#34;))
+        [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;)]
+
+    Note:
+        * Match criteria of filter
+            * List/Dict/Set and `classes`: include value or not
+            * The others Type: exact match value or not
+    &#34;&#34;&#34;
+    elements = Elements()
+    for e in self:
+        if e.is_match(**kwargs):
+            elements._append(e)
+    return elements</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self, **kwargs: Any) ‑> Optional[dash_cytoscape_elements.element.Element]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the Element(Node/Edge) object in the Elements matching the <code>kwargs</code>.</p>
+<p>Must specify the values that uniquely identify the Element in the <code>kwargs</code>.
+The others parameters are ignored.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
+<dd>the values of <code><a title="dash_cytoscape_elements.elements.Elements.node_keys" href="#dash_cytoscape_elements.elements.Elements.node_keys">Elements.node_keys</a></code> or <code><a title="dash_cytoscape_elements.elements.Elements.edge_keys" href="#dash_cytoscape_elements.elements.Elements.edge_keys">Elements.edge_keys</a></code></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Optional[Element]:</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; e = Elements()
+&gt;&gt;&gt; e.add(id=&quot;node1&quot;)
+&gt;&gt;&gt; e.add(id=&quot;node2&quot;)
+&gt;&gt;&gt; e.add(id=&quot;edge1&quot;, source=&quot;node1&quot;, target=&quot;node2&quot;)
+&gt;&gt;&gt; e.add(id=&quot;edge2&quot;, source=&quot;node2&quot;, target=&quot;node1&quot;)
+&gt;&gt;&gt; print(e)
+[Node(id=&quot;node1&quot;), Node(id=&quot;node2&quot;), Edge(id=&quot;edge1&quot;), Edge(id=&quot;edge2&quot;)]
+&gt;&gt;&gt;
+&gt;&gt;&gt; print(e.get(id=&quot;node1&quot;))
+Node(id=&quot;node1&quot;)
+&gt;&gt;&gt;
+&gt;&gt;&gt; print(e.get(source=&quot;node1&quot;, target=&quot;node2&quot;))
+Edge(id=&quot;edge1&quot;)
+&gt;&gt;&gt;
+&gt;&gt;&gt; print(e.get(id=&quot;node3&quot;))
+None
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get(self, **kwargs: Any) -&gt; Optional[Element]:
+    &#34;&#34;&#34;Get the Element(Node/Edge) object in the Elements matching the `kwargs`.
+
+    Must specify the values that uniquely identify the Element in the `kwargs`.
+    The others parameters are ignored.
+
+    Args:
+        **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+
+    Returns:
+        Optional[Element]:
+
+    Examples:
+        &gt;&gt;&gt; e = Elements()
+        &gt;&gt;&gt; e.add(id=&#34;node1&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;node2&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;)
+        &gt;&gt;&gt; print(e)
+        [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; print(e.get(id=&#34;node1&#34;))
+        Node(id=&#34;node1&#34;)
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; print(e.get(source=&#34;node1&#34;, target=&#34;node2&#34;))
+        Edge(id=&#34;edge1&#34;)
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; print(e.get(id=&#34;node3&#34;))
+        None
+    &#34;&#34;&#34;
+    if kwargs.keys() &gt;= self.node_keys:
+        key_dict = {k: kwargs[k] for k in self.node_keys}
+        for e in self.filter(group=&#34;nodes&#34;):
+            if e.is_match(**key_dict):
+                return e
+
+    if kwargs.keys() &gt;= self.edge_keys:
+        key_dict = {k: kwargs[k] for k in self.edge_keys}
+        for e in self.filter(group=&#34;edges&#34;):
+            if e.is_match(**key_dict):
+                return e
+
+    return None</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.remove"><code class="name flex">
+<span>def <span class="ident">remove</span></span>(<span>self, **kwargs: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove the Element(Node/Edge) object in the Elements.</p>
+<p>Must specify the values that uniquely identify the Element in the <code>kwargs</code>.
+The others parameters are ignored.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
+<dd>the values of <code><a title="dash_cytoscape_elements.elements.Elements.node_keys" href="#dash_cytoscape_elements.elements.Elements.node_keys">Elements.node_keys</a></code> or <code><a title="dash_cytoscape_elements.elements.Elements.edge_keys" href="#dash_cytoscape_elements.elements.Elements.edge_keys">Elements.edge_keys</a></code></dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; e = Elements()
+&gt;&gt;&gt; e.add(id=&quot;node1&quot;)
+&gt;&gt;&gt; e.add(id=&quot;node2&quot;)
+&gt;&gt;&gt; e.add(id=&quot;edge1&quot;, source=&quot;node1&quot;, target=&quot;node2&quot;)
+&gt;&gt;&gt; e.add(id=&quot;edge2&quot;, source=&quot;node2&quot;, target=&quot;node1&quot;)
+&gt;&gt;&gt; print(e)
+[Node(id=&quot;node1&quot;), Node(id=&quot;node2&quot;), Edge(id=&quot;edge1&quot;), Edge(id=&quot;edge2&quot;)]
+&gt;&gt;&gt;
+&gt;&gt;&gt; e.remove(id=&quot;node1&quot;)
+&gt;&gt;&gt; print(e)
+[Node(id=&quot;node2&quot;), Edge(id=&quot;edge1&quot;), Edge(id=&quot;edge2&quot;)]
+&gt;&gt;&gt;
+&gt;&gt;&gt; e.remove(id=&quot;node3&quot;)
+&gt;&gt;&gt; print(e)
+[Node(id=&quot;node2&quot;), Edge(id=&quot;edge1&quot;), Edge(id=&quot;edge2&quot;)]
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove(self, **kwargs: Any):
+    &#34;&#34;&#34;Remove the Element(Node/Edge) object in the Elements.
+
+    Must specify the values that uniquely identify the Element in the `kwargs`.
+    The others parameters are ignored.
+
+    Args:
+        **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+
+    Examples:
+        &gt;&gt;&gt; e = Elements()
+        &gt;&gt;&gt; e.add(id=&#34;node1&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;node2&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;)
+        &gt;&gt;&gt; print(e)
+        [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; e.remove(id=&#34;node1&#34;)
+        &gt;&gt;&gt; print(e)
+        [Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; e.remove(id=&#34;node3&#34;)
+        &gt;&gt;&gt; print(e)
+        [Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+    &#34;&#34;&#34;
+    element = self.get(**kwargs)
+    if element:
+        self._remove(element)</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.to_dash"><code class="name flex">
+<span>def <span class="ident">to_dash</span></span>(<span>self) ‑> List[~T]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create the element object of Dash Cytoscape format.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List</code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<ul>
+<li><a href="https://dash.plotly.com/cytoscape/reference">Dash Cytoscape format</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_dash(self) -&gt; List:
+    &#34;&#34;&#34;Create the element object of Dash Cytoscape format.
+
+    Returns:
+        List: no comment
+
+    Notes:
+        * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
+    &#34;&#34;&#34;
+    elements_dict = self.dict(exclude_defaults=True, by_alias=True)
+    if elements_dict:
+        return elements_dict[&#34;__root__&#34;]
+    return []</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.elements.Elements.to_json"><code class="name flex">
+<span>def <span class="ident">to_json</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create the json raw string of Cytoscape.js format.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<ul>
+<li><a href="https://js.cytoscape.org/#notation/elements-json">Cytoscape.js format</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_json(self) -&gt; str:
+    &#34;&#34;&#34;Create the json raw string of Cytoscape.js format.
+
+    Returns:
+        str: no comment
+
+    Notes:
+        * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
+    &#34;&#34;&#34;
+    if self.__root__:
+        return self.json(exclude_defaults=True, indent=4, by_alias=True)
+    return &#34;&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dash_cytoscape_elements" href="index.html">dash_cytoscape_elements</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dash_cytoscape_elements.elements.Elements" href="#dash_cytoscape_elements.elements.Elements">Elements</a></code></h4>
+<ul class="two-column">
+<li><code><a title="dash_cytoscape_elements.elements.Elements.add" href="#dash_cytoscape_elements.elements.Elements.add">add</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.edge" href="#dash_cytoscape_elements.elements.Elements.edge">edge</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.edge_keys" href="#dash_cytoscape_elements.elements.Elements.edge_keys">edge_keys</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.filter" href="#dash_cytoscape_elements.elements.Elements.filter">filter</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.from_dash" href="#dash_cytoscape_elements.elements.Elements.from_dash">from_dash</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.from_file" href="#dash_cytoscape_elements.elements.Elements.from_file">from_file</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.from_json" href="#dash_cytoscape_elements.elements.Elements.from_json">from_json</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.get" href="#dash_cytoscape_elements.elements.Elements.get">get</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.node" href="#dash_cytoscape_elements.elements.Elements.node">node</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.node_keys" href="#dash_cytoscape_elements.elements.Elements.node_keys">node_keys</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.remove" href="#dash_cytoscape_elements.elements.Elements.remove">remove</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.to_dash" href="#dash_cytoscape_elements.elements.Elements.to_dash">to_dash</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.Elements.to_json" href="#dash_cytoscape_elements.elements.Elements.to_json">to_json</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
