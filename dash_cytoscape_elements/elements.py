@@ -1,33 +1,33 @@
 """The main module of this package."""
 import uuid
-from typing import Any, ClassVar, ForwardRef, List, Optional, Set, Union
+from typing import Any, ClassVar, List, Optional, Set, Type, Union
 
 from pydantic import BaseModel
+from typing_extensions import TypeAlias
 
 from .element import Edge, Element, Node
-
-Elements = ForwardRef("Elements")
 
 
 class Elements(BaseModel):
     """This class is a List of Element(Node/Edge) object."""
 
-    node: ClassVar[Node] = Node
-    """The Node class to be stored in the Elements."""
+    _Node: TypeAlias = Node
+    """The Node Type to be stored in the Elements."""
+    _Edge: TypeAlias = Edge
+    """The Edge Type to be stored in the Elements."""
+
     node_keys: ClassVar[Set[str]] = {"id"}
     """The parameters that uniquely identify the specific Node object in the Elements.
 
     default is `{ "id" }`
     """
-    edge: ClassVar[Edge] = Edge
-    """The Edge class to be stored in the Elements."""
     edge_keys: ClassVar[Set[str]] = {"source", "target"}
     """The parameters that uniquely identify the specific Edge object in the Elements.
 
     default is `{ "source", "target" }`
     """
 
-    __root__: List[Union[node, edge]] = []
+    __root__: List[Union[_Node, _Edge]] = []
 
     def __str__(self) -> str:
         return "[{}]".format(", ".join([str(e) for e in self.__root__]))
@@ -35,14 +35,14 @@ class Elements(BaseModel):
     def __iter__(self):
         return iter(self.__root__)
 
-    def _append(self, element: Element):
+    def _append(self, element: Union[Node, Edge]) -> None:
         self.__root__.append(element)
 
-    def _remove(self, element: Element):
+    def _remove(self, element: Union[Node, Edge]) -> None:
         self.__root__.remove(element)
 
     @classmethod
-    def from_dash(cls, data: List) -> Elements:
+    def from_dash(cls, data: List) -> "Elements":
         """Create the Elements from the element object of Dash Cytoscape format.
 
         Args:
@@ -57,7 +57,7 @@ class Elements(BaseModel):
         return cls.parse_obj(data)
 
     @classmethod
-    def from_file(cls, path: str) -> Elements:
+    def from_file(cls, path: str) -> "Elements":
         """Create the Elements from the json file of Cytoscape.js format.
 
         Args:
@@ -72,7 +72,7 @@ class Elements(BaseModel):
         return cls.parse_file(path)
 
     @classmethod
-    def from_json(cls, data: str) -> Elements:
+    def from_json(cls, data: str) -> "Elements":
         """Create the Elements from the json string of Cytoscape.js format.
 
         Args:
@@ -113,7 +113,7 @@ class Elements(BaseModel):
             return self.json(exclude_defaults=True, indent=4, by_alias=True)
         return ""
 
-    def filter(self, **kwargs: Any) -> Elements:
+    def filter(self, **kwargs: Any) -> "Elements":
         """Get the Elements contains Element(Node/Edge) objects that match kwargs.
 
         Args:
@@ -147,7 +147,7 @@ class Elements(BaseModel):
                 elements._append(e)
         return elements
 
-    def get(self, **kwargs: Any) -> Optional[Element]:
+    def get(self, **kwargs: Any) -> Union[Node, Edge, None]:
         """Get the Element(Node/Edge) object in the Elements matching the `kwargs`.
 
         Must specify the values that uniquely identify the Element in the `kwargs`.
@@ -157,7 +157,7 @@ class Elements(BaseModel):
             **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
 
         Returns:
-            Optional[Element]:
+            Union[Node, Edge, None]: no comment
 
         Examples:
             >>> e = Elements()
@@ -191,7 +191,7 @@ class Elements(BaseModel):
 
         return None
 
-    def add(self, **kwargs: Any):
+    def add(self, **kwargs: Any) -> None:
         """Add the Element(Node/Edge) object to the Elements.
 
         If exist `source` and `edge` in `kwargs`, add the Edge Element.
@@ -201,7 +201,7 @@ class Elements(BaseModel):
             **kwargs (Any): each class variables in `dash_cytoscape_elements.element`
 
         Returns:
-            Optional[Element]:
+            None: no comment
 
         Examples:
             >>> e = Elements()
@@ -247,21 +247,19 @@ class Elements(BaseModel):
             element.add(**kwargs)
             return
 
-        if "source" in kwargs and "target" in kwargs:
-            element = self.edge()
-        else:
-            element = self.node()
-
+        new_element: Union[Node, Edge] = (
+            self._Edge() if "source" in kwargs and "target" in kwargs else self._Node()
+        )
         if "id" in kwargs:
             if self.filter(id=kwargs["id"]).__root__:
                 return
-            element.add(**kwargs)
+            new_element.add(**kwargs)
         else:
-            element.add(**kwargs, id=str(uuid.uuid4()))
+            new_element.add(**kwargs, id=str(uuid.uuid4()))
 
-        self._append(element)
+        self._append(new_element)
 
-    def remove(self, **kwargs: Any):
+    def remove(self, **kwargs: Any) -> None:
         """Remove the Element(Node/Edge) object in the Elements.
 
         Must specify the values that uniquely identify the Element in the `kwargs`.
@@ -269,6 +267,9 @@ class Elements(BaseModel):
 
         Args:
             **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+
+        Returns:
+            None: no comment
 
         Examples:
             >>> e = Elements()
@@ -290,6 +291,3 @@ class Elements(BaseModel):
         element = self.get(**kwargs)
         if element:
             self._remove(element)
-
-
-Elements.update_forward_refs()

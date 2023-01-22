@@ -116,6 +116,8 @@ class EdgeData(BaseElement):
 
 
 class Element(BaseElement):
+    classes: str = &#34;&#34;
+
     def is_match(self, **kwargs: Any) -&gt; bool:
         for k, v in kwargs.items():
             if k == &#34;classes&#34;:
@@ -124,14 +126,14 @@ class Element(BaseElement):
                 return False
         return True
 
-    def _add_classes(self, value: str):
+    def _add_classes(self, value: str) -&gt; None:
         classes = self.classes.split()
         for c in value.split():
             if not (c in classes):
                 classes.append(c)
         self.classes = &#34; &#34;.join([c for c in classes])
 
-    def add(self, **kwargs: Any):
+    def add(self, **kwargs: Any) -&gt; None:
         for k, v in kwargs.items():
             if k == &#34;classes&#34;:
                 self._add_classes(v)
@@ -140,7 +142,6 @@ class Element(BaseElement):
 
 
 class Node(Element):
-
     group: str = &#34;&#34;
     data: NodeData = NodeData()
     position: Position = Position()
@@ -149,11 +150,10 @@ class Node(Element):
     locked: bool = False
     grabbable: bool = True
     pannable: bool = False
-    classes: str = &#34;&#34;
     scratch: Dict = {}
 
     @validator(&#34;group&#34;, always=True)
-    def generate_group(cls, group):
+    def generate_group(cls, group) -&gt; str:
         if group != &#34;nodes&#34;:
             return &#34;nodes&#34;
         return group
@@ -163,7 +163,6 @@ class Node(Element):
 
 
 class Edge(Element):
-
     group: str = &#34;&#34;
     data: EdgeData = EdgeData()
     selected: bool = False
@@ -171,11 +170,10 @@ class Edge(Element):
     locked: bool = False
     grabbable: bool = True
     pannable: bool = True
-    classes: str = &#34;&#34;
     scratch: Dict = {}
 
     @validator(&#34;group&#34;, always=True)
-    def generate_group(cls, group):
+    def generate_group(cls, group) -&gt; str:
         if group != &#34;edges&#34;:
             return &#34;edges&#34;
         return group
@@ -205,7 +203,6 @@ class Edge(Element):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Edge(Element):
-
     group: str = &#34;&#34;
     data: EdgeData = EdgeData()
     selected: bool = False
@@ -213,11 +210,10 @@ class Edge(Element):
     locked: bool = False
     grabbable: bool = True
     pannable: bool = True
-    classes: str = &#34;&#34;
     scratch: Dict = {}
 
     @validator(&#34;group&#34;, always=True)
-    def generate_group(cls, group):
+    def generate_group(cls, group) -&gt; str:
         if group != &#34;edges&#34;:
             return &#34;edges&#34;
         return group
@@ -234,10 +230,6 @@ class Edge(Element):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="dash_cytoscape_elements.element.Edge.classes"><code class="name">var <span class="ident">classes</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="dash_cytoscape_elements.element.Edge.data"><code class="name">var <span class="ident">data</span> : <a title="dash_cytoscape_elements.element.EdgeData" href="#dash_cytoscape_elements.element.EdgeData">EdgeData</a></code></dt>
 <dd>
 <div class="desc"></div>
@@ -274,7 +266,7 @@ class Edge(Element):
 <h3>Static methods</h3>
 <dl>
 <dt id="dash_cytoscape_elements.element.Edge.generate_group"><code class="name flex">
-<span>def <span class="ident">generate_group</span></span>(<span>group)</span>
+<span>def <span class="ident">generate_group</span></span>(<span>group) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -283,7 +275,7 @@ class Edge(Element):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@validator(&#34;group&#34;, always=True)
-def generate_group(cls, group):
+def generate_group(cls, group) -&gt; str:
     if group != &#34;edges&#34;:
         return &#34;edges&#34;
     return group</code></pre>
@@ -356,7 +348,6 @@ def generate_group(cls, group):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Node(Element):
-
     group: str = &#34;&#34;
     data: NodeData = NodeData()
     position: Position = Position()
@@ -365,11 +356,10 @@ def generate_group(cls, group):
     locked: bool = False
     grabbable: bool = True
     pannable: bool = False
-    classes: str = &#34;&#34;
     scratch: Dict = {}
 
     @validator(&#34;group&#34;, always=True)
-    def generate_group(cls, group):
+    def generate_group(cls, group) -&gt; str:
         if group != &#34;nodes&#34;:
             return &#34;nodes&#34;
         return group
@@ -386,10 +376,6 @@ def generate_group(cls, group):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="dash_cytoscape_elements.element.Node.classes"><code class="name">var <span class="ident">classes</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="dash_cytoscape_elements.element.Node.data"><code class="name">var <span class="ident">data</span> : <a title="dash_cytoscape_elements.element.NodeData" href="#dash_cytoscape_elements.element.NodeData">NodeData</a></code></dt>
 <dd>
 <div class="desc"></div>
@@ -430,7 +416,7 @@ def generate_group(cls, group):
 <h3>Static methods</h3>
 <dl>
 <dt id="dash_cytoscape_elements.element.Node.generate_group"><code class="name flex">
-<span>def <span class="ident">generate_group</span></span>(<span>group)</span>
+<span>def <span class="ident">generate_group</span></span>(<span>group) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -439,7 +425,7 @@ def generate_group(cls, group):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@validator(&#34;group&#34;, always=True)
-def generate_group(cls, group):
+def generate_group(cls, group) -&gt; str:
     if group != &#34;nodes&#34;:
         return &#34;nodes&#34;
     return group</code></pre>
@@ -537,7 +523,6 @@ def generate_group(cls, group):
 <li>
 <h4><code><a title="dash_cytoscape_elements.element.Edge" href="#dash_cytoscape_elements.element.Edge">Edge</a></code></h4>
 <ul class="two-column">
-<li><code><a title="dash_cytoscape_elements.element.Edge.classes" href="#dash_cytoscape_elements.element.Edge.classes">classes</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Edge.data" href="#dash_cytoscape_elements.element.Edge.data">data</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Edge.generate_group" href="#dash_cytoscape_elements.element.Edge.generate_group">generate_group</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Edge.grabbable" href="#dash_cytoscape_elements.element.Edge.grabbable">grabbable</a></code></li>
@@ -563,7 +548,6 @@ def generate_group(cls, group):
 <li>
 <h4><code><a title="dash_cytoscape_elements.element.Node" href="#dash_cytoscape_elements.element.Node">Node</a></code></h4>
 <ul class="two-column">
-<li><code><a title="dash_cytoscape_elements.element.Node.classes" href="#dash_cytoscape_elements.element.Node.classes">classes</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Node.data" href="#dash_cytoscape_elements.element.Node.data">data</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Node.generate_group" href="#dash_cytoscape_elements.element.Node.generate_group">generate_group</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Node.grabbable" href="#dash_cytoscape_elements.element.Node.grabbable">grabbable</a></code></li>

@@ -87,6 +87,8 @@ class EdgeData(BaseElement):
 
 
 class Element(BaseElement):
+    classes: str = ""
+
     def is_match(self, **kwargs: Any) -> bool:
         for k, v in kwargs.items():
             if k == "classes":
@@ -95,14 +97,14 @@ class Element(BaseElement):
                 return False
         return True
 
-    def _add_classes(self, value: str):
+    def _add_classes(self, value: str) -> None:
         classes = self.classes.split()
         for c in value.split():
             if not (c in classes):
                 classes.append(c)
         self.classes = " ".join([c for c in classes])
 
-    def add(self, **kwargs: Any):
+    def add(self, **kwargs: Any) -> None:
         for k, v in kwargs.items():
             if k == "classes":
                 self._add_classes(v)
@@ -111,7 +113,6 @@ class Element(BaseElement):
 
 
 class Node(Element):
-
     group: str = ""
     data: NodeData = NodeData()
     position: Position = Position()
@@ -120,11 +121,10 @@ class Node(Element):
     locked: bool = False
     grabbable: bool = True
     pannable: bool = False
-    classes: str = ""
     scratch: Dict = {}
 
     @validator("group", always=True)
-    def generate_group(cls, group):
+    def generate_group(cls, group) -> str:
         if group != "nodes":
             return "nodes"
         return group
@@ -134,7 +134,6 @@ class Node(Element):
 
 
 class Edge(Element):
-
     group: str = ""
     data: EdgeData = EdgeData()
     selected: bool = False
@@ -142,11 +141,10 @@ class Edge(Element):
     locked: bool = False
     grabbable: bool = True
     pannable: bool = True
-    classes: str = ""
     scratch: Dict = {}
 
     @validator("group", always=True)
-    def generate_group(cls, group):
+    def generate_group(cls, group) -> str:
         if group != "edges":
             return "edges"
         return group
