@@ -1,8 +1,12 @@
 POETRY := poetry
 
-.PHONY: default format test pytest doc
+.PHONY: default black doc isort mypy test pytest
 
-default: format doc
+default: black isort mypy pytest
+
+black:
+	@printf "black:\n"
+	@${POETRY} run black .
 
 doc:
 	@printf "pdoc:\n"
@@ -10,11 +14,13 @@ doc:
 	@mv ./docs/dash_cytoscape_elements/* ./docs/
 	@rm -r ./docs/dash_cytoscape_elements/
 
-format:
-	@printf "black:\n"
-	@${POETRY} run black .
+isort:
 	@printf "isort:\n"
 	@${POETRY} run isort .
+
+mypy:
+	@printf "mypy:\n"
+	@${POETRY} run mypy .
 
 test:
 	@printf "tox:\n"

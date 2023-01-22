@@ -29,10 +29,9 @@ jobs:
       #          install and run linters
       #----------------------------------------------
       - run: python -m pip install black isort mypy
-      - run: |
-          black . --check
-          isort . --check-only
-          mypy .
+      - run: black . --check
+      - run: isort . --check-only
+      - run: mypy .
   test:
     needs: linting
     strategy:
