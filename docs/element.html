@@ -32,7 +32,7 @@ from typing import Any, Dict, List, Set
 
 from pydantic import BaseModel, Field, validator
 
-__all__ = [&#34;Edge&#34;, &#34;EdgeData&#34;, &#34;Node&#34;, &#34;NodeData&#34;, &#34;Position&#34;]
+__all__ = [&#34;Element&#34;, &#34;Edge&#34;, &#34;EdgeData&#34;, &#34;Node&#34;, &#34;NodeData&#34;, &#34;Position&#34;]
 
 
 class BaseElement(BaseModel):
@@ -116,7 +116,13 @@ class EdgeData(BaseElement):
 
 
 class Element(BaseElement):
+    group: str = &#34;&#34;
     classes: str = &#34;&#34;
+    selected: bool = False
+    selectable: bool = True
+    locked: bool = False
+    grabbable: bool = True
+    scratch: Dict = {}
 
     def is_match(self, **kwargs: Any) -&gt; bool:
         for k, v in kwargs.items():
@@ -142,15 +148,9 @@ class Element(BaseElement):
 
 
 class Node(Element):
-    group: str = &#34;&#34;
     data: NodeData = NodeData()
     position: Position = Position()
-    selected: bool = False
-    selectable: bool = True
-    locked: bool = False
-    grabbable: bool = True
     pannable: bool = False
-    scratch: Dict = {}
 
     @validator(&#34;group&#34;, always=True)
     def generate_group(cls, group) -&gt; str:
@@ -163,14 +163,8 @@ class Node(Element):
 
 
 class Edge(Element):
-    group: str = &#34;&#34;
     data: EdgeData = EdgeData()
-    selected: bool = False
-    selectable: bool = True
-    locked: bool = False
-    grabbable: bool = True
     pannable: bool = True
-    scratch: Dict = {}
 
     @validator(&#34;group&#34;, always=True)
     def generate_group(cls, group) -&gt; str:
@@ -203,14 +197,8 @@ class Edge(Element):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Edge(Element):
-    group: str = &#34;&#34;
     data: EdgeData = EdgeData()
-    selected: bool = False
-    selectable: bool = True
-    locked: bool = False
-    grabbable: bool = True
     pannable: bool = True
-    scratch: Dict = {}
 
     @validator(&#34;group&#34;, always=True)
     def generate_group(cls, group) -&gt; str:
@@ -223,7 +211,7 @@ class Edge(Element):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>dash_cytoscape_elements.element.Element</li>
+<li><a title="dash_cytoscape_elements.element.Element" href="#dash_cytoscape_elements.element.Element">Element</a></li>
 <li>dash_cytoscape_elements.element.BaseElement</li>
 <li>pydantic.main.BaseModel</li>
 <li>pydantic.utils.Representation</li>
@@ -234,31 +222,7 @@ class Edge(Element):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="dash_cytoscape_elements.element.Edge.grabbable"><code class="name">var <span class="ident">grabbable</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Edge.group"><code class="name">var <span class="ident">group</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Edge.locked"><code class="name">var <span class="ident">locked</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="dash_cytoscape_elements.element.Edge.pannable"><code class="name">var <span class="ident">pannable</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Edge.scratch"><code class="name">var <span class="ident">scratch</span> : Dict[~KT, ~VT]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Edge.selectable"><code class="name">var <span class="ident">selectable</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Edge.selected"><code class="name">var <span class="ident">selected</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -336,6 +300,129 @@ def generate_group(cls, group) -&gt; str:
 </dd>
 </dl>
 </dd>
+<dt id="dash_cytoscape_elements.element.Element"><code class="flex name class">
+<span>class <span class="ident">Element</span></span>
+<span>(</span><span>**data: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Element(BaseElement):
+    group: str = &#34;&#34;
+    classes: str = &#34;&#34;
+    selected: bool = False
+    selectable: bool = True
+    locked: bool = False
+    grabbable: bool = True
+    scratch: Dict = {}
+
+    def is_match(self, **kwargs: Any) -&gt; bool:
+        for k, v in kwargs.items():
+            if k == &#34;classes&#34;:
+                return set(self.classes.split()) &gt;= set(v.split())
+            if not (self.is_match_attribute(k, v)):
+                return False
+        return True
+
+    def _add_classes(self, value: str) -&gt; None:
+        classes = self.classes.split()
+        for c in value.split():
+            if not (c in classes):
+                classes.append(c)
+        self.classes = &#34; &#34;.join([c for c in classes])
+
+    def add(self, **kwargs: Any) -&gt; None:
+        for k, v in kwargs.items():
+            if k == &#34;classes&#34;:
+                self._add_classes(v)
+            else:
+                self.add_attribute(k, v)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dash_cytoscape_elements.element.BaseElement</li>
+<li>pydantic.main.BaseModel</li>
+<li>pydantic.utils.Representation</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dash_cytoscape_elements.element.Edge" href="#dash_cytoscape_elements.element.Edge">Edge</a></li>
+<li><a title="dash_cytoscape_elements.element.Node" href="#dash_cytoscape_elements.element.Node">Node</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dash_cytoscape_elements.element.Element.classes"><code class="name">var <span class="ident">classes</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dash_cytoscape_elements.element.Element.grabbable"><code class="name">var <span class="ident">grabbable</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dash_cytoscape_elements.element.Element.group"><code class="name">var <span class="ident">group</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dash_cytoscape_elements.element.Element.locked"><code class="name">var <span class="ident">locked</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dash_cytoscape_elements.element.Element.scratch"><code class="name">var <span class="ident">scratch</span> : Dict[~KT, ~VT]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dash_cytoscape_elements.element.Element.selectable"><code class="name">var <span class="ident">selectable</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dash_cytoscape_elements.element.Element.selected"><code class="name">var <span class="ident">selected</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="dash_cytoscape_elements.element.Element.add"><code class="name flex">
+<span>def <span class="ident">add</span></span>(<span>self, **kwargs: Any) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add(self, **kwargs: Any) -&gt; None:
+    for k, v in kwargs.items():
+        if k == &#34;classes&#34;:
+            self._add_classes(v)
+        else:
+            self.add_attribute(k, v)</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.element.Element.is_match"><code class="name flex">
+<span>def <span class="ident">is_match</span></span>(<span>self, **kwargs: Any) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_match(self, **kwargs: Any) -&gt; bool:
+    for k, v in kwargs.items():
+        if k == &#34;classes&#34;:
+            return set(self.classes.split()) &gt;= set(v.split())
+        if not (self.is_match_attribute(k, v)):
+            return False
+    return True</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="dash_cytoscape_elements.element.Node"><code class="flex name class">
 <span>class <span class="ident">Node</span></span>
 <span>(</span><span>**data: Any)</span>
@@ -348,15 +435,9 @@ def generate_group(cls, group) -&gt; str:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Node(Element):
-    group: str = &#34;&#34;
     data: NodeData = NodeData()
     position: Position = Position()
-    selected: bool = False
-    selectable: bool = True
-    locked: bool = False
-    grabbable: bool = True
     pannable: bool = False
-    scratch: Dict = {}
 
     @validator(&#34;group&#34;, always=True)
     def generate_group(cls, group) -&gt; str:
@@ -369,7 +450,7 @@ def generate_group(cls, group) -&gt; str:
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>dash_cytoscape_elements.element.Element</li>
+<li><a title="dash_cytoscape_elements.element.Element" href="#dash_cytoscape_elements.element.Element">Element</a></li>
 <li>dash_cytoscape_elements.element.BaseElement</li>
 <li>pydantic.main.BaseModel</li>
 <li>pydantic.utils.Representation</li>
@@ -380,35 +461,11 @@ def generate_group(cls, group) -&gt; str:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="dash_cytoscape_elements.element.Node.grabbable"><code class="name">var <span class="ident">grabbable</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Node.group"><code class="name">var <span class="ident">group</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Node.locked"><code class="name">var <span class="ident">locked</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="dash_cytoscape_elements.element.Node.pannable"><code class="name">var <span class="ident">pannable</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt id="dash_cytoscape_elements.element.Node.position"><code class="name">var <span class="ident">position</span> : <a title="dash_cytoscape_elements.element.Position" href="#dash_cytoscape_elements.element.Position">Position</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Node.scratch"><code class="name">var <span class="ident">scratch</span> : Dict[~KT, ~VT]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Node.selectable"><code class="name">var <span class="ident">selectable</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="dash_cytoscape_elements.element.Node.selected"><code class="name">var <span class="ident">selected</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -522,16 +579,10 @@ def generate_group(cls, group) -&gt; str:
 <ul>
 <li>
 <h4><code><a title="dash_cytoscape_elements.element.Edge" href="#dash_cytoscape_elements.element.Edge">Edge</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="dash_cytoscape_elements.element.Edge.data" href="#dash_cytoscape_elements.element.Edge.data">data</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Edge.generate_group" href="#dash_cytoscape_elements.element.Edge.generate_group">generate_group</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Edge.grabbable" href="#dash_cytoscape_elements.element.Edge.grabbable">grabbable</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Edge.group" href="#dash_cytoscape_elements.element.Edge.group">group</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Edge.locked" href="#dash_cytoscape_elements.element.Edge.locked">locked</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Edge.pannable" href="#dash_cytoscape_elements.element.Edge.pannable">pannable</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Edge.scratch" href="#dash_cytoscape_elements.element.Edge.scratch">scratch</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Edge.selectable" href="#dash_cytoscape_elements.element.Edge.selectable">selectable</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Edge.selected" href="#dash_cytoscape_elements.element.Edge.selected">selected</a></code></li>
 </ul>
 </li>
 <li>
@@ -546,18 +597,26 @@ def generate_group(cls, group) -&gt; str:
 </ul>
 </li>
 <li>
-<h4><code><a title="dash_cytoscape_elements.element.Node" href="#dash_cytoscape_elements.element.Node">Node</a></code></h4>
+<h4><code><a title="dash_cytoscape_elements.element.Element" href="#dash_cytoscape_elements.element.Element">Element</a></code></h4>
 <ul class="two-column">
+<li><code><a title="dash_cytoscape_elements.element.Element.add" href="#dash_cytoscape_elements.element.Element.add">add</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.classes" href="#dash_cytoscape_elements.element.Element.classes">classes</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.grabbable" href="#dash_cytoscape_elements.element.Element.grabbable">grabbable</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.group" href="#dash_cytoscape_elements.element.Element.group">group</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.is_match" href="#dash_cytoscape_elements.element.Element.is_match">is_match</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.locked" href="#dash_cytoscape_elements.element.Element.locked">locked</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.scratch" href="#dash_cytoscape_elements.element.Element.scratch">scratch</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.selectable" href="#dash_cytoscape_elements.element.Element.selectable">selectable</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.selected" href="#dash_cytoscape_elements.element.Element.selected">selected</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dash_cytoscape_elements.element.Node" href="#dash_cytoscape_elements.element.Node">Node</a></code></h4>
+<ul class="">
 <li><code><a title="dash_cytoscape_elements.element.Node.data" href="#dash_cytoscape_elements.element.Node.data">data</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Node.generate_group" href="#dash_cytoscape_elements.element.Node.generate_group">generate_group</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Node.grabbable" href="#dash_cytoscape_elements.element.Node.grabbable">grabbable</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Node.group" href="#dash_cytoscape_elements.element.Node.group">group</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Node.locked" href="#dash_cytoscape_elements.element.Node.locked">locked</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Node.pannable" href="#dash_cytoscape_elements.element.Node.pannable">pannable</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Node.position" href="#dash_cytoscape_elements.element.Node.position">position</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Node.scratch" href="#dash_cytoscape_elements.element.Node.scratch">scratch</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Node.selectable" href="#dash_cytoscape_elements.element.Node.selectable">selectable</a></code></li>
-<li><code><a title="dash_cytoscape_elements.element.Node.selected" href="#dash_cytoscape_elements.element.Node.selected">selected</a></code></li>
 </ul>
 </li>
 <li>

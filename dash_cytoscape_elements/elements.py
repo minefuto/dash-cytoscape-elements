@@ -1,33 +1,43 @@
 """The main module of this package."""
 import uuid
-from typing import Any, ClassVar, List, Optional, Set, Type, Union
+from typing import Any, ClassVar, Generic, List, Set, Tuple, Type, TypeVar, Union
 
-from pydantic import BaseModel
+from pydantic.generics import GenericModel, GenericModelT
 from typing_extensions import TypeAlias
 
-from .element import Edge, Element, Node
+from .element import Edge, Node
+
+NodeT = TypeVar("NodeT", bound=Node)
+EdgeT = TypeVar("EdgeT", bound=Edge)
 
 
-class Elements(BaseModel):
+class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
     """This class is a List of Element(Node/Edge) object."""
-
-    _Node: TypeAlias = Node
-    """The Node Type to be stored in the Elements."""
-    _Edge: TypeAlias = Edge
-    """The Edge Type to be stored in the Elements."""
 
     node_keys: ClassVar[Set[str]] = {"id"}
     """The parameters that uniquely identify the specific Node object in the Elements.
 
     default is `{ "id" }`
     """
+
     edge_keys: ClassVar[Set[str]] = {"source", "target"}
     """The parameters that uniquely identify the specific Edge object in the Elements.
 
     default is `{ "source", "target" }`
     """
 
-    __root__: List[Union[_Node, _Edge]] = []
+    __NodeType__: ClassVar[Type[Any]]
+    __EdgeType__: ClassVar[Type[Any]]
+    __root__: List[Union[NodeT, EdgeT]] = []
+
+    def __class_getitem__(  # type: ignore[override]
+        cls: Type[GenericModelT], params: Tuple[Type[Node], Type[Edge]]
+    ) -> Type[Any]:
+        model = super().__class_getitem__(params)
+        model.__NodeType__, model.__EdgeType__ = params
+        print(params)
+        print(model)
+        return model
 
     def __str__(self) -> str:
         return "[{}]".format(", ".join([str(e) for e in self.__root__]))
@@ -35,14 +45,14 @@ class Elements(BaseModel):
     def __iter__(self):
         return iter(self.__root__)
 
-    def _append(self, element: Union[Node, Edge]) -> None:
+    def _append(self, element: Union[NodeT, EdgeT]) -> None:
         self.__root__.append(element)
 
-    def _remove(self, element: Union[Node, Edge]) -> None:
+    def _remove(self, element: Union[NodeT, EdgeT]) -> None:
         self.__root__.remove(element)
 
     @classmethod
-    def from_dash(cls, data: List) -> "Elements":
+    def from_dash(cls, data: List) -> "GenericElements":
         """Create the Elements from the element object of Dash Cytoscape format.
 
         Args:
@@ -57,7 +67,7 @@ class Elements(BaseModel):
         return cls.parse_obj(data)
 
     @classmethod
-    def from_file(cls, path: str) -> "Elements":
+    def from_file(cls, path: str) -> "GenericElements":
         """Create the Elements from the json file of Cytoscape.js format.
 
         Args:
@@ -72,7 +82,7 @@ class Elements(BaseModel):
         return cls.parse_file(path)
 
     @classmethod
-    def from_json(cls, data: str) -> "Elements":
+    def from_json(cls, data: str) -> "GenericElements":
         """Create the Elements from the json string of Cytoscape.js format.
 
         Args:
@@ -113,7 +123,7 @@ class Elements(BaseModel):
             return self.json(exclude_defaults=True, indent=4, by_alias=True)
         return ""
 
-    def filter(self, **kwargs: Any) -> "Elements":
+    def filter(self, **kwargs: Any) -> "GenericElements":
         """Get the Elements contains Element(Node/Edge) objects that match kwargs.
 
         Args:
@@ -147,7 +157,7 @@ class Elements(BaseModel):
                 elements._append(e)
         return elements
 
-    def get(self, **kwargs: Any) -> Union[Node, Edge, None]:
+    def get(self, **kwargs: Any) -> Union[NodeT, EdgeT, None]:
         """Get the Element(Node/Edge) object in the Elements matching the `kwargs`.
 
         Must specify the values that uniquely identify the Element in the `kwargs`.
@@ -247,8 +257,10 @@ class Elements(BaseModel):
             element.add(**kwargs)
             return
 
-        new_element: Union[Node, Edge] = (
-            self._Edge() if "source" in kwargs and "target" in kwargs else self._Node()
+        new_element: Union[NodeT, EdgeT] = (
+            self.__EdgeType__()
+            if "source" in kwargs and "target" in kwargs
+            else self.__NodeType__()
         )
         if "id" in kwargs:
             if self.filter(id=kwargs["id"]).__root__:
@@ -291,3 +303,7 @@ class Elements(BaseModel):
         element = self.get(**kwargs)
         if element:
             self._remove(element)
+
+
+Elements: TypeAlias = GenericElements[Node, Edge]
+"""This is TypeAlias of GenericElement[Node, Edge]"""

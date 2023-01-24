@@ -1,0 +1,16 @@
+[
+    {
+        "group": "nodes",
+        "data": {
+            "id": "node1"
+        }
+    },
+    {
+        "group": "edges",
+        "data": {
+            "id": "edge1",
+            "source": "node1",
+            "target": "target2"
+        }
+    }
+]

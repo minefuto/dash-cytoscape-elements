@@ -1,7 +1,21 @@
+from typing import List, Set
+
 import pytest
 
-from dash_cytoscape_elements import Elements
+from dash_cytoscape_elements import Elements, GenericElements
 from dash_cytoscape_elements.element import Edge, Node
+
+
+class CustomNode(Node):
+    custom_str: str = ""
+    custom_list: List[str] = []
+    custom_set: Set[str] = set()
+
+
+class CustomEdge(Edge):
+    custom_str: str = ""
+    custom_list: List[str] = []
+    custom_set: Set[str] = set()
 
 
 @pytest.fixture
@@ -13,6 +27,14 @@ def init():
 @pytest.fixture
 def conversion():
     elements = Elements.from_file("./tests/mock_data/conversion.json")
+    return elements
+
+
+@pytest.fixture
+def custom_init():
+    elements = GenericElements[CustomNode, CustomEdge].from_file(
+        "./tests/mock_data/custom_init.json"
+    )
     return elements
 
 
@@ -158,3 +180,15 @@ def test_to_json(conversion):
 
 def test_to_dash(conversion):
     assert Elements.from_dash(conversion.to_dash()) == conversion
+
+
+def test_custom_element(custom_init):
+    custom_init.add(
+        id="node1", custom_list=["list2", "list3"], custom_set={"set2", "set3"}
+    )
+    custom_init.add(
+        source="node1", target="node2", custom_list="list2", custom_set="set2"
+    )
+    assert custom_init == GenericElements[CustomNode, CustomEdge].from_file(
+        "./tests/mock_data/add_custom_element.json"
+    )

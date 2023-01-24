@@ -1,0 +1,34 @@
+[
+    {
+        "group": "nodes",
+        "data": {
+            "id": "node1"
+        },
+        "custom_list": [
+            "list1",
+            "list2",
+            "list3"
+        ],
+        "custom_set": [
+            "set3",
+            "set2",
+            "set1"
+        ]
+    },
+    {
+        "group": "edges",
+        "data": {
+            "id": "edge1",
+            "source": "node1",
+            "target": "node2"
+        },
+        "custom_list": [
+            "list1",
+            "list2"
+        ],
+        "custom_set": [
+            "set2",
+            "set1"
+        ]
+    }
+]

@@ -71,9 +71,10 @@ __all__ = [
 <pre><code class="python">class Elements(BaseModel):
     &#34;&#34;&#34;This class is a List of Element(Node/Edge) object.&#34;&#34;&#34;
 
-    _Node: TypeAlias = Node
+    NodeType: ClassVar = Node
     &#34;&#34;&#34;The Node Type to be stored in the Elements.&#34;&#34;&#34;
-    _Edge: TypeAlias = Edge
+
+    EdgeType: ClassVar = Edge
     &#34;&#34;&#34;The Edge Type to be stored in the Elements.&#34;&#34;&#34;
 
     node_keys: ClassVar[Set[str]] = {&#34;id&#34;}
@@ -81,13 +82,14 @@ __all__ = [
 
     default is `{ &#34;id&#34; }`
     &#34;&#34;&#34;
+
     edge_keys: ClassVar[Set[str]] = {&#34;source&#34;, &#34;target&#34;}
     &#34;&#34;&#34;The parameters that uniquely identify the specific Edge object in the Elements.
 
     default is `{ &#34;source&#34;, &#34;target&#34; }`
     &#34;&#34;&#34;
 
-    __root__: List[Union[_Node, _Edge]] = []
+    __root__: List[Union[NodeType, EdgeType]] = []
 
     def __str__(self) -&gt; str:
         return &#34;[{}]&#34;.format(&#34;, &#34;.join([str(e) for e in self.__root__]))
@@ -308,7 +310,9 @@ __all__ = [
             return
 
         new_element: Union[Node, Edge] = (
-            self._Edge() if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs else self._Node()
+            self.EdgeType()
+            if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs
+            else self.NodeType()
         )
         if &#34;id&#34; in kwargs:
             if self.filter(id=kwargs[&#34;id&#34;]).__root__:
@@ -359,6 +363,14 @@ __all__ = [
 </ul>
 <h3>Class variables</h3>
 <dl>
+<dt id="dash_cytoscape_elements.Elements.EdgeType"><code class="name">var <span class="ident">EdgeType</span> : ClassVar</code></dt>
+<dd>
+<div class="desc"><p>The Edge Type to be stored in the Elements.</p></div>
+</dd>
+<dt id="dash_cytoscape_elements.Elements.NodeType"><code class="name">var <span class="ident">NodeType</span> : ClassVar</code></dt>
+<dd>
+<div class="desc"><p>The Node Type to be stored in the Elements.</p></div>
+</dd>
 <dt id="dash_cytoscape_elements.Elements.edge_keys"><code class="name">var <span class="ident">edge_keys</span> : ClassVar[Set[str]]</code></dt>
 <dd>
 <div class="desc"><p>The parameters that uniquely identify the specific Edge object in the Elements.</p>
@@ -607,7 +619,9 @@ Otherwise add the Node Element.</p>
         return
 
     new_element: Union[Node, Edge] = (
-        self._Edge() if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs else self._Node()
+        self.EdgeType()
+        if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs
+        else self.NodeType()
     )
     if &#34;id&#34; in kwargs:
         if self.filter(id=kwargs[&#34;id&#34;]).__root__:
@@ -938,6 +952,8 @@ The others parameters are ignored.</p>
 <li>
 <h4><code><a title="dash_cytoscape_elements.Elements" href="#dash_cytoscape_elements.Elements">Elements</a></code></h4>
 <ul class="two-column">
+<li><code><a title="dash_cytoscape_elements.Elements.EdgeType" href="#dash_cytoscape_elements.Elements.EdgeType">EdgeType</a></code></li>
+<li><code><a title="dash_cytoscape_elements.Elements.NodeType" href="#dash_cytoscape_elements.Elements.NodeType">NodeType</a></code></li>
 <li><code><a title="dash_cytoscape_elements.Elements.add" href="#dash_cytoscape_elements.Elements.add">add</a></code></li>
 <li><code><a title="dash_cytoscape_elements.Elements.edge_keys" href="#dash_cytoscape_elements.Elements.edge_keys">edge_keys</a></code></li>
 <li><code><a title="dash_cytoscape_elements.Elements.filter" href="#dash_cytoscape_elements.Elements.filter">filter</a></code></li>

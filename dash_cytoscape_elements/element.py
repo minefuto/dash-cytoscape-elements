@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Set
 
 from pydantic import BaseModel, Field, validator
 
-__all__ = ["Edge", "EdgeData", "Node", "NodeData", "Position"]
+__all__ = ["Element", "Edge", "EdgeData", "Node", "NodeData", "Position"]
 
 
 class BaseElement(BaseModel):
@@ -47,14 +47,14 @@ class BaseElement(BaseModel):
                 else:
                     if not (value in getattr(self, key)):
                         getattr(self, key).append(value)
-            if isinstance(getattr(self, key), Set):
+            elif isinstance(getattr(self, key), Set):
                 if isinstance(value, Set):
                     for v in value:
                         if not (v in getattr(self, key)):
                             getattr(self, key).add(v)
                 else:
                     if not (value in getattr(self, key)):
-                        getattr(self, key).append(value)
+                        getattr(self, key).add(value)
             elif isinstance(getattr(self, key), Dict):
                 for k, v in value.items():
                     getattr(self, key)[k] = v
@@ -87,7 +87,13 @@ class EdgeData(BaseElement):
 
 
 class Element(BaseElement):
+    group: str = ""
     classes: str = ""
+    selected: bool = False
+    selectable: bool = True
+    locked: bool = False
+    grabbable: bool = True
+    scratch: Dict = {}
 
     def is_match(self, **kwargs: Any) -> bool:
         for k, v in kwargs.items():
@@ -113,15 +119,9 @@ class Element(BaseElement):
 
 
 class Node(Element):
-    group: str = ""
     data: NodeData = NodeData()
     position: Position = Position()
-    selected: bool = False
-    selectable: bool = True
-    locked: bool = False
-    grabbable: bool = True
     pannable: bool = False
-    scratch: Dict = {}
 
     @validator("group", always=True)
     def generate_group(cls, group) -> str:
@@ -134,14 +134,8 @@ class Node(Element):
 
 
 class Edge(Element):
-    group: str = ""
     data: EdgeData = EdgeData()
-    selected: bool = False
-    selectable: bool = True
-    locked: bool = False
-    grabbable: bool = True
     pannable: bool = True
-    scratch: Dict = {}
 
     @validator("group", always=True)
     def generate_group(cls, group) -> str:
