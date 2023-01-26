@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dash-cytoscape-elements"
-version = "0.0.1"
+version = "0.0.2"
 description = "Python object for dash-cytoscape elements"
 authors = ["minefuto <minefuto@gmail.com>"]
 license = "MIT"
