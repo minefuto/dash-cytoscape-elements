@@ -12,16 +12,23 @@ EdgeT = TypeVar("EdgeT", bound=Edge)
 
 
 class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
-    """This class is a List of Element(Node/Edge) object."""
+    """This generic class is a List of Element(`element.Node`/`element.Edge`) object.
+
+    It can specify the type of Element(`element.Node`/`element.Edge`).
+
+    Basically to use Elements(Type Alias of `Elements`).
+    """
 
     node_keys: ClassVar[Set[str]] = {"id"}
-    """The parameters that uniquely identify the specific Node object in the Elements.
+    """The parameters that uniquely identify the specific Node object
+    in the `GenericElements`.
 
     default is `{ "id" }`
     """
 
     edge_keys: ClassVar[Set[str]] = {"source", "target"}
-    """The parameters that uniquely identify the specific Edge object in the Elements.
+    """The parameters that uniquely identify the specific Edge object
+    in the `GenericElements`.
 
     default is `{ "source", "target" }`
     """
@@ -35,8 +42,6 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
     ) -> Type[Any]:
         model = super().__class_getitem__(params)
         model.__NodeType__, model.__EdgeType__ = params
-        print(params)
-        print(model)
         return model
 
     def __str__(self) -> str:
@@ -53,13 +58,13 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
     @classmethod
     def from_dash(cls, data: List) -> "GenericElements":
-        """Create the Elements from the element object of Dash Cytoscape format.
+        """Create the `GenericElements` from the element object of Dash Cytoscape format.
 
         Args:
             data (List): no comment
 
         Returns:
-            Elements: no comment
+            GenericElements: no comment
 
         Notes:
             * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
@@ -68,13 +73,13 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
     @classmethod
     def from_file(cls, path: str) -> "GenericElements":
-        """Create the Elements from the json file of Cytoscape.js format.
+        """Create the `GenericElements` from the json file of Cytoscape.js format.
 
         Args:
             path (str): no comment
 
         Returns:
-            Elements: no comment
+            GenericElements: no comment
 
         Notes:
             * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
@@ -83,13 +88,13 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
     @classmethod
     def from_json(cls, data: str) -> "GenericElements":
-        """Create the Elements from the json string of Cytoscape.js format.
+        """Create the `GenericElements` from the json string of Cytoscape.js format.
 
         Args:
             data (str): no comment
 
         Returns:
-            Elements: no comment
+            GenericElements: no comment
 
         Notes:
             * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
@@ -124,13 +129,14 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
         return ""
 
     def filter(self, **kwargs: Any) -> "GenericElements":
-        """Get the Elements contains Element(Node/Edge) objects that match kwargs.
+        """Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
+         objects that match `kwargs`.
 
         Args:
             **kwargs (Any): no comment
 
         Returns:
-            Elements: no comment
+            GenericElements: no comment
 
         Examples:
             >>> e = Elements()
@@ -158,16 +164,18 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
         return elements
 
     def get(self, **kwargs: Any) -> Union[NodeT, EdgeT, None]:
-        """Get the Element(Node/Edge) object in the Elements matching the `kwargs`.
+        """Get the Element(`element.Node`/`element.Edge`) object
+         in the `GenericElements` matching the `kwargs`.
 
         Must specify the values that uniquely identify the Element in the `kwargs`.
         The others parameters are ignored.
 
         Args:
-            **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+            **kwargs (Any): the values of `GenericElements.node_keys`
+             or `GenericElements.edge_keys`
 
         Returns:
-            Union[Node, Edge, None]: no comment
+            Union[element.Node, element.Edge, None]: no comment
 
         Examples:
             >>> e = Elements()
@@ -202,13 +210,13 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
         return None
 
     def add(self, **kwargs: Any) -> None:
-        """Add the Element(Node/Edge) object to the Elements.
+        """Add the Element(`element.Node`/`element.Edge`) object to the `GenericElements`.
 
-        If exist `source` and `edge` in `kwargs`, add the Edge Element.
-        Otherwise add the Node Element.
+        If exist `source` and `target` in `kwargs`, add the `element.Edge`.
+        Otherwise add the `element.Node`.
 
         Args:
-            **kwargs (Any): each class variables in `dash_cytoscape_elements.element`
+            **kwargs (Any): each class variables in `element`
 
         Returns:
             None: no comment
@@ -243,7 +251,7 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
         Note:
             * UUID is assigned if not exist `id` in the `kwargs`.
-            * If already exist Element, update the Element(Node/Edge) parameters.
+            * If already exist Element, update the Element(`element.Node`/`element.Edge`) parameters.
                 * List/Dict/Set and `classes`: append value
                 * The others Type: replace value
         """
@@ -272,13 +280,14 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
         self._append(new_element)
 
     def remove(self, **kwargs: Any) -> None:
-        """Remove the Element(Node/Edge) object in the Elements.
+        """Remove the Element(`element.Node`/`element.Edge`) object in the `GenericElements`.
 
         Must specify the values that uniquely identify the Element in the `kwargs`.
         The others parameters are ignored.
 
         Args:
-            **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+            **kwargs (Any): the values of `GenericElements.node_keys`
+             or `GenericElements.edge_keys`
 
         Returns:
             None: no comment
@@ -306,4 +315,3 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
 
 Elements: TypeAlias = GenericElements[Node, Edge]
-"""This is TypeAlias of GenericElement[Node, Edge]"""

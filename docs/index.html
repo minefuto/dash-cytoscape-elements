@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>dash_cytoscape_elements API documentation</title>
-<meta name="description" content="A Python object for [Dash Cytoscape](https://github.com/plotly/dash-cytoscape) Elements." />
+<meta name="description" content="A Python object for [Dash Cytoscape](https://github.com/plotly/dash-cytoscape)
+Elements." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,17 +23,21 @@
 <h1 class="title">Package <code>dash_cytoscape_elements</code></h1>
 </header>
 <section id="section-intro">
-<p>A Python object for <a href="https://github.com/plotly/dash-cytoscape">Dash Cytoscape</a> Elements.</p>
+<p>A Python object for <a href="https://github.com/plotly/dash-cytoscape">Dash Cytoscape</a>
+Elements.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;A Python object for [Dash Cytoscape](https://github.com/plotly/dash-cytoscape) Elements.&#34;&#34;&#34;
-from .elements import Elements
+<pre><code class="python">&#34;&#34;&#34;A Python object for [Dash Cytoscape](https://github.com/plotly/dash-cytoscape)
+ Elements.
+&#34;&#34;&#34;
+from .elements import Elements, GenericElements
 
 __version__ = &#34;0.0.1&#34;
 __all__ = [
     &#34;Elements&#34;,
+    &#34;GenericElements&#34;,
 ]</code></pre>
 </details>
 </section>
@@ -56,40 +61,52 @@ __all__ = [
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="dash_cytoscape_elements.Elements"><code class="flex name class">
-<span>class <span class="ident">Elements</span></span>
+<dt id="dash_cytoscape_elements.GenericElements"><code class="flex name class">
+<span>class <span class="ident">GenericElements</span></span>
 <span>(</span><span>**data: Any)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This class is a List of Element(Node/Edge) object.</p>
+<div class="desc"><p>This generic class is a List of Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>) object.</p>
+<p>It can specify the type of Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>).</p>
+<p>Basically to use Elements(Type Alias of <code><a title="dash_cytoscape_elements.GenericElements[Node, Edge]" href="#dash_cytoscape_elements.GenericElements[Node, Edge]">GenericElements[Node, Edge]</a></code>).</p>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Elements(BaseModel):
-    &#34;&#34;&#34;This class is a List of Element(Node/Edge) object.&#34;&#34;&#34;
+<pre><code class="python">class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
+    &#34;&#34;&#34;This generic class is a List of Element(`element.Node`/`element.Edge`) object.
 
-    NodeType: ClassVar = Node
-    &#34;&#34;&#34;The Node Type to be stored in the Elements.&#34;&#34;&#34;
+    It can specify the type of Element(`element.Node`/`element.Edge`).
 
-    EdgeType: ClassVar = Edge
-    &#34;&#34;&#34;The Edge Type to be stored in the Elements.&#34;&#34;&#34;
+    Basically to use Elements(Type Alias of `Elements`).
+    &#34;&#34;&#34;
 
     node_keys: ClassVar[Set[str]] = {&#34;id&#34;}
-    &#34;&#34;&#34;The parameters that uniquely identify the specific Node object in the Elements.
+    &#34;&#34;&#34;The parameters that uniquely identify the specific Node object
+    in the `GenericElements`.
 
     default is `{ &#34;id&#34; }`
     &#34;&#34;&#34;
 
     edge_keys: ClassVar[Set[str]] = {&#34;source&#34;, &#34;target&#34;}
-    &#34;&#34;&#34;The parameters that uniquely identify the specific Edge object in the Elements.
+    &#34;&#34;&#34;The parameters that uniquely identify the specific Edge object
+    in the `GenericElements`.
 
     default is `{ &#34;source&#34;, &#34;target&#34; }`
     &#34;&#34;&#34;
 
-    __root__: List[Union[NodeType, EdgeType]] = []
+    __NodeType__: ClassVar[Type[Any]]
+    __EdgeType__: ClassVar[Type[Any]]
+    __root__: List[Union[NodeT, EdgeT]] = []
+
+    def __class_getitem__(  # type: ignore[override]
+        cls: Type[GenericModelT], params: Tuple[Type[Node], Type[Edge]]
+    ) -&gt; Type[Any]:
+        model = super().__class_getitem__(params)
+        model.__NodeType__, model.__EdgeType__ = params
+        return model
 
     def __str__(self) -&gt; str:
         return &#34;[{}]&#34;.format(&#34;, &#34;.join([str(e) for e in self.__root__]))
@@ -97,21 +114,21 @@ __all__ = [
     def __iter__(self):
         return iter(self.__root__)
 
-    def _append(self, element: Union[Node, Edge]) -&gt; None:
+    def _append(self, element: Union[NodeT, EdgeT]) -&gt; None:
         self.__root__.append(element)
 
-    def _remove(self, element: Union[Node, Edge]) -&gt; None:
+    def _remove(self, element: Union[NodeT, EdgeT]) -&gt; None:
         self.__root__.remove(element)
 
     @classmethod
-    def from_dash(cls, data: List) -&gt; &#34;Elements&#34;:
-        &#34;&#34;&#34;Create the Elements from the element object of Dash Cytoscape format.
+    def from_dash(cls, data: List) -&gt; &#34;GenericElements&#34;:
+        &#34;&#34;&#34;Create the `GenericElements` from the element object of Dash Cytoscape format.
 
         Args:
             data (List): no comment
 
         Returns:
-            Elements: no comment
+            GenericElements: no comment
 
         Notes:
             * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
@@ -119,14 +136,14 @@ __all__ = [
         return cls.parse_obj(data)
 
     @classmethod
-    def from_file(cls, path: str) -&gt; &#34;Elements&#34;:
-        &#34;&#34;&#34;Create the Elements from the json file of Cytoscape.js format.
+    def from_file(cls, path: str) -&gt; &#34;GenericElements&#34;:
+        &#34;&#34;&#34;Create the `GenericElements` from the json file of Cytoscape.js format.
 
         Args:
             path (str): no comment
 
         Returns:
-            Elements: no comment
+            GenericElements: no comment
 
         Notes:
             * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
@@ -134,14 +151,14 @@ __all__ = [
         return cls.parse_file(path)
 
     @classmethod
-    def from_json(cls, data: str) -&gt; &#34;Elements&#34;:
-        &#34;&#34;&#34;Create the Elements from the json string of Cytoscape.js format.
+    def from_json(cls, data: str) -&gt; &#34;GenericElements&#34;:
+        &#34;&#34;&#34;Create the `GenericElements` from the json string of Cytoscape.js format.
 
         Args:
             data (str): no comment
 
         Returns:
-            Elements: no comment
+            GenericElements: no comment
 
         Notes:
             * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
@@ -175,14 +192,15 @@ __all__ = [
             return self.json(exclude_defaults=True, indent=4, by_alias=True)
         return &#34;&#34;
 
-    def filter(self, **kwargs: Any) -&gt; &#34;Elements&#34;:
-        &#34;&#34;&#34;Get the Elements contains Element(Node/Edge) objects that match kwargs.
+    def filter(self, **kwargs: Any) -&gt; &#34;GenericElements&#34;:
+        &#34;&#34;&#34;Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
+         objects that match `kwargs`.
 
         Args:
             **kwargs (Any): no comment
 
         Returns:
-            Elements: no comment
+            GenericElements: no comment
 
         Examples:
             &gt;&gt;&gt; e = Elements()
@@ -209,17 +227,19 @@ __all__ = [
                 elements._append(e)
         return elements
 
-    def get(self, **kwargs: Any) -&gt; Union[Node, Edge, None]:
-        &#34;&#34;&#34;Get the Element(Node/Edge) object in the Elements matching the `kwargs`.
+    def get(self, **kwargs: Any) -&gt; Union[NodeT, EdgeT, None]:
+        &#34;&#34;&#34;Get the Element(`element.Node`/`element.Edge`) object
+         in the `GenericElements` matching the `kwargs`.
 
         Must specify the values that uniquely identify the Element in the `kwargs`.
         The others parameters are ignored.
 
         Args:
-            **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+            **kwargs (Any): the values of `GenericElements.node_keys`
+             or `GenericElements.edge_keys`
 
         Returns:
-            Union[Node, Edge, None]: no comment
+            Union[element.Node, element.Edge, None]: no comment
 
         Examples:
             &gt;&gt;&gt; e = Elements()
@@ -254,13 +274,13 @@ __all__ = [
         return None
 
     def add(self, **kwargs: Any) -&gt; None:
-        &#34;&#34;&#34;Add the Element(Node/Edge) object to the Elements.
+        &#34;&#34;&#34;Add the Element(`element.Node`/`element.Edge`) object to the `GenericElements`.
 
-        If exist `source` and `edge` in `kwargs`, add the Edge Element.
-        Otherwise add the Node Element.
+        If exist `source` and `target` in `kwargs`, add the `element.Edge`.
+        Otherwise add the `element.Node`.
 
         Args:
-            **kwargs (Any): each class variables in `dash_cytoscape_elements.element`
+            **kwargs (Any): each class variables in `element`
 
         Returns:
             None: no comment
@@ -295,7 +315,7 @@ __all__ = [
 
         Note:
             * UUID is assigned if not exist `id` in the `kwargs`.
-            * If already exist Element, update the Element(Node/Edge) parameters.
+            * If already exist Element, update the Element(`element.Node`/`element.Edge`) parameters.
                 * List/Dict/Set and `classes`: append value
                 * The others Type: replace value
         &#34;&#34;&#34;
@@ -309,10 +329,10 @@ __all__ = [
             element.add(**kwargs)
             return
 
-        new_element: Union[Node, Edge] = (
-            self.EdgeType()
+        new_element: Union[NodeT, EdgeT] = (
+            self.__EdgeType__()
             if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs
-            else self.NodeType()
+            else self.__NodeType__()
         )
         if &#34;id&#34; in kwargs:
             if self.filter(id=kwargs[&#34;id&#34;]).__root__:
@@ -324,13 +344,14 @@ __all__ = [
         self._append(new_element)
 
     def remove(self, **kwargs: Any) -&gt; None:
-        &#34;&#34;&#34;Remove the Element(Node/Edge) object in the Elements.
+        &#34;&#34;&#34;Remove the Element(`element.Node`/`element.Edge`) object in the `GenericElements`.
 
         Must specify the values that uniquely identify the Element in the `kwargs`.
         The others parameters are ignored.
 
         Args:
-            **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+            **kwargs (Any): the values of `GenericElements.node_keys`
+             or `GenericElements.edge_keys`
 
         Returns:
             None: no comment
@@ -358,37 +379,37 @@ __all__ = [
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li>pydantic.generics.GenericModel</li>
 <li>pydantic.main.BaseModel</li>
 <li>pydantic.utils.Representation</li>
+<li>typing.Generic</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dash_cytoscape_elements.elements.GenericElements[Node, Edge]" href="elements.html#dash_cytoscape_elements.elements.GenericElements[Node, Edge]">GenericElements[Node, Edge]</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="dash_cytoscape_elements.Elements.EdgeType"><code class="name">var <span class="ident">EdgeType</span> : ClassVar</code></dt>
+<dt id="dash_cytoscape_elements.GenericElements.edge_keys"><code class="name">var <span class="ident">edge_keys</span> : ClassVar[Set[str]]</code></dt>
 <dd>
-<div class="desc"><p>The Edge Type to be stored in the Elements.</p></div>
-</dd>
-<dt id="dash_cytoscape_elements.Elements.NodeType"><code class="name">var <span class="ident">NodeType</span> : ClassVar</code></dt>
-<dd>
-<div class="desc"><p>The Node Type to be stored in the Elements.</p></div>
-</dd>
-<dt id="dash_cytoscape_elements.Elements.edge_keys"><code class="name">var <span class="ident">edge_keys</span> : ClassVar[Set[str]]</code></dt>
-<dd>
-<div class="desc"><p>The parameters that uniquely identify the specific Edge object in the Elements.</p>
+<div class="desc"><p>The parameters that uniquely identify the specific Edge object
+in the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code>.</p>
 <p>default is <code>{ "source", "target" }</code></p></div>
 </dd>
-<dt id="dash_cytoscape_elements.Elements.node_keys"><code class="name">var <span class="ident">node_keys</span> : ClassVar[Set[str]]</code></dt>
+<dt id="dash_cytoscape_elements.GenericElements.node_keys"><code class="name">var <span class="ident">node_keys</span> : ClassVar[Set[str]]</code></dt>
 <dd>
-<div class="desc"><p>The parameters that uniquely identify the specific Node object in the Elements.</p>
+<div class="desc"><p>The parameters that uniquely identify the specific Node object
+in the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code>.</p>
 <p>default is <code>{ "id" }</code></p></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="dash_cytoscape_elements.Elements.from_dash"><code class="name flex">
-<span>def <span class="ident">from_dash</span></span>(<span>data: List[~T]) ‑> <a title="dash_cytoscape_elements.elements.Elements" href="elements.html#dash_cytoscape_elements.elements.Elements">Elements</a></span>
+<dt id="dash_cytoscape_elements.GenericElements.from_dash"><code class="name flex">
+<span>def <span class="ident">from_dash</span></span>(<span>data: List[~T]) ‑> <a title="dash_cytoscape_elements.elements.GenericElements" href="elements.html#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create the Elements from the element object of Dash Cytoscape format.</p>
+<div class="desc"><p>Create the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code> from the element object of Dash Cytoscape format.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data</code></strong> :&ensp;<code>List</code></dt>
@@ -396,7 +417,7 @@ __all__ = [
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="dash_cytoscape_elements.Elements" href="#dash_cytoscape_elements.Elements">Elements</a></code></dt>
+<dt><code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code></dt>
 <dd>no comment</dd>
 </dl>
 <h2 id="notes">Notes</h2>
@@ -408,14 +429,14 @@ __all__ = [
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_dash(cls, data: List) -&gt; &#34;Elements&#34;:
-    &#34;&#34;&#34;Create the Elements from the element object of Dash Cytoscape format.
+def from_dash(cls, data: List) -&gt; &#34;GenericElements&#34;:
+    &#34;&#34;&#34;Create the `GenericElements` from the element object of Dash Cytoscape format.
 
     Args:
         data (List): no comment
 
     Returns:
-        Elements: no comment
+        GenericElements: no comment
 
     Notes:
         * [Dash Cytoscape format](https://dash.plotly.com/cytoscape/reference)
@@ -423,11 +444,11 @@ def from_dash(cls, data: List) -&gt; &#34;Elements&#34;:
     return cls.parse_obj(data)</code></pre>
 </details>
 </dd>
-<dt id="dash_cytoscape_elements.Elements.from_file"><code class="name flex">
-<span>def <span class="ident">from_file</span></span>(<span>path: str) ‑> <a title="dash_cytoscape_elements.elements.Elements" href="elements.html#dash_cytoscape_elements.elements.Elements">Elements</a></span>
+<dt id="dash_cytoscape_elements.GenericElements.from_file"><code class="name flex">
+<span>def <span class="ident">from_file</span></span>(<span>path: str) ‑> <a title="dash_cytoscape_elements.elements.GenericElements" href="elements.html#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create the Elements from the json file of Cytoscape.js format.</p>
+<div class="desc"><p>Create the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code> from the json file of Cytoscape.js format.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
@@ -435,7 +456,7 @@ def from_dash(cls, data: List) -&gt; &#34;Elements&#34;:
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="dash_cytoscape_elements.Elements" href="#dash_cytoscape_elements.Elements">Elements</a></code></dt>
+<dt><code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code></dt>
 <dd>no comment</dd>
 </dl>
 <h2 id="notes">Notes</h2>
@@ -447,14 +468,14 @@ def from_dash(cls, data: List) -&gt; &#34;Elements&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_file(cls, path: str) -&gt; &#34;Elements&#34;:
-    &#34;&#34;&#34;Create the Elements from the json file of Cytoscape.js format.
+def from_file(cls, path: str) -&gt; &#34;GenericElements&#34;:
+    &#34;&#34;&#34;Create the `GenericElements` from the json file of Cytoscape.js format.
 
     Args:
         path (str): no comment
 
     Returns:
-        Elements: no comment
+        GenericElements: no comment
 
     Notes:
         * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
@@ -462,11 +483,11 @@ def from_file(cls, path: str) -&gt; &#34;Elements&#34;:
     return cls.parse_file(path)</code></pre>
 </details>
 </dd>
-<dt id="dash_cytoscape_elements.Elements.from_json"><code class="name flex">
-<span>def <span class="ident">from_json</span></span>(<span>data: str) ‑> <a title="dash_cytoscape_elements.elements.Elements" href="elements.html#dash_cytoscape_elements.elements.Elements">Elements</a></span>
+<dt id="dash_cytoscape_elements.GenericElements.from_json"><code class="name flex">
+<span>def <span class="ident">from_json</span></span>(<span>data: str) ‑> <a title="dash_cytoscape_elements.elements.GenericElements" href="elements.html#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create the Elements from the json string of Cytoscape.js format.</p>
+<div class="desc"><p>Create the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code> from the json string of Cytoscape.js format.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data</code></strong> :&ensp;<code>str</code></dt>
@@ -474,7 +495,7 @@ def from_file(cls, path: str) -&gt; &#34;Elements&#34;:
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="dash_cytoscape_elements.Elements" href="#dash_cytoscape_elements.Elements">Elements</a></code></dt>
+<dt><code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code></dt>
 <dd>no comment</dd>
 </dl>
 <h2 id="notes">Notes</h2>
@@ -486,14 +507,14 @@ def from_file(cls, path: str) -&gt; &#34;Elements&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_json(cls, data: str) -&gt; &#34;Elements&#34;:
-    &#34;&#34;&#34;Create the Elements from the json string of Cytoscape.js format.
+def from_json(cls, data: str) -&gt; &#34;GenericElements&#34;:
+    &#34;&#34;&#34;Create the `GenericElements` from the json string of Cytoscape.js format.
 
     Args:
         data (str): no comment
 
     Returns:
-        Elements: no comment
+        GenericElements: no comment
 
     Notes:
         * [Cytoscape.js format](https://js.cytoscape.org/#notation/elements-json)
@@ -504,13 +525,13 @@ def from_json(cls, data: str) -&gt; &#34;Elements&#34;:
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="dash_cytoscape_elements.Elements.add"><code class="name flex">
+<dt id="dash_cytoscape_elements.GenericElements.add"><code class="name flex">
 <span>def <span class="ident">add</span></span>(<span>self, **kwargs: Any) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Add the Element(Node/Edge) object to the Elements.</p>
-<p>If exist <code>source</code> and <code>edge</code> in <code>kwargs</code>, add the Edge Element.
-Otherwise add the Node Element.</p>
+<div class="desc"><p>Add the Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>) object to the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code>.</p>
+<p>If exist <code>source</code> and <code>target</code> in <code>kwargs</code>, add the <code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>.
+Otherwise add the <code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
@@ -552,7 +573,7 @@ Otherwise add the Node Element.</p>
 <h2 id="note">Note</h2>
 <ul>
 <li>UUID is assigned if not exist <code>id</code> in the <code>kwargs</code>.</li>
-<li>If already exist Element, update the Element(Node/Edge) parameters.<ul>
+<li>If already exist Element, update the Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>) parameters.<ul>
 <li>List/Dict/Set and <code>classes</code>: append value</li>
 <li>The others Type: replace value</li>
 </ul>
@@ -563,13 +584,13 @@ Otherwise add the Node Element.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add(self, **kwargs: Any) -&gt; None:
-    &#34;&#34;&#34;Add the Element(Node/Edge) object to the Elements.
+    &#34;&#34;&#34;Add the Element(`element.Node`/`element.Edge`) object to the `GenericElements`.
 
-    If exist `source` and `edge` in `kwargs`, add the Edge Element.
-    Otherwise add the Node Element.
+    If exist `source` and `target` in `kwargs`, add the `element.Edge`.
+    Otherwise add the `element.Node`.
 
     Args:
-        **kwargs (Any): each class variables in `dash_cytoscape_elements.element`
+        **kwargs (Any): each class variables in `element`
 
     Returns:
         None: no comment
@@ -604,7 +625,7 @@ Otherwise add the Node Element.</p>
 
     Note:
         * UUID is assigned if not exist `id` in the `kwargs`.
-        * If already exist Element, update the Element(Node/Edge) parameters.
+        * If already exist Element, update the Element(`element.Node`/`element.Edge`) parameters.
             * List/Dict/Set and `classes`: append value
             * The others Type: replace value
     &#34;&#34;&#34;
@@ -618,10 +639,10 @@ Otherwise add the Node Element.</p>
         element.add(**kwargs)
         return
 
-    new_element: Union[Node, Edge] = (
-        self.EdgeType()
+    new_element: Union[NodeT, EdgeT] = (
+        self.__EdgeType__()
         if &#34;source&#34; in kwargs and &#34;target&#34; in kwargs
-        else self.NodeType()
+        else self.__NodeType__()
     )
     if &#34;id&#34; in kwargs:
         if self.filter(id=kwargs[&#34;id&#34;]).__root__:
@@ -633,11 +654,12 @@ Otherwise add the Node Element.</p>
     self._append(new_element)</code></pre>
 </details>
 </dd>
-<dt id="dash_cytoscape_elements.Elements.filter"><code class="name flex">
-<span>def <span class="ident">filter</span></span>(<span>self, **kwargs: Any) ‑> <a title="dash_cytoscape_elements.elements.Elements" href="elements.html#dash_cytoscape_elements.elements.Elements">Elements</a></span>
+<dt id="dash_cytoscape_elements.GenericElements.filter"><code class="name flex">
+<span>def <span class="ident">filter</span></span>(<span>self, **kwargs: Any) ‑> <a title="dash_cytoscape_elements.elements.GenericElements" href="elements.html#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the Elements contains Element(Node/Edge) objects that match kwargs.</p>
+<div class="desc"><p>Get the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code> contains Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>)
+objects that match <code>kwargs</code>.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
@@ -645,7 +667,7 @@ Otherwise add the Node Element.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="dash_cytoscape_elements.Elements" href="#dash_cytoscape_elements.Elements">Elements</a></code></dt>
+<dt><code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code></dt>
 <dd>no comment</dd>
 </dl>
 <h2 id="examples">Examples</h2>
@@ -674,14 +696,15 @@ Otherwise add the Node Element.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def filter(self, **kwargs: Any) -&gt; &#34;Elements&#34;:
-    &#34;&#34;&#34;Get the Elements contains Element(Node/Edge) objects that match kwargs.
+<pre><code class="python">def filter(self, **kwargs: Any) -&gt; &#34;GenericElements&#34;:
+    &#34;&#34;&#34;Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
+     objects that match `kwargs`.
 
     Args:
         **kwargs (Any): no comment
 
     Returns:
-        Elements: no comment
+        GenericElements: no comment
 
     Examples:
         &gt;&gt;&gt; e = Elements()
@@ -709,21 +732,23 @@ Otherwise add the Node Element.</p>
     return elements</code></pre>
 </details>
 </dd>
-<dt id="dash_cytoscape_elements.Elements.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>self, **kwargs: Any) ‑> Union[<a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a>, <a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a>, None]</span>
+<dt id="dash_cytoscape_elements.GenericElements.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self, **kwargs: Any) ‑> Union[~NodeT, ~EdgeT, None]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the Element(Node/Edge) object in the Elements matching the <code>kwargs</code>.</p>
+<div class="desc"><p>Get the Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>) object
+in the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code> matching the <code>kwargs</code>.</p>
 <p>Must specify the values that uniquely identify the Element in the <code>kwargs</code>.
 The others parameters are ignored.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
-<dd>the values of <code><a title="dash_cytoscape_elements.Elements.node_keys" href="#dash_cytoscape_elements.Elements.node_keys">Elements.node_keys</a></code> or <code><a title="dash_cytoscape_elements.Elements.edge_keys" href="#dash_cytoscape_elements.Elements.edge_keys">Elements.edge_keys</a></code></dd>
+<dd>the values of <code><a title="dash_cytoscape_elements.GenericElements.node_keys" href="#dash_cytoscape_elements.GenericElements.node_keys">GenericElements.node_keys</a></code></dd>
 </dl>
+<p>or <code><a title="dash_cytoscape_elements.GenericElements.edge_keys" href="#dash_cytoscape_elements.GenericElements.edge_keys">GenericElements.edge_keys</a></code></p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Union[Node, Edge, None]</code></dt>
+<dt><code>Union[<a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a>, <a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a>, None]</code></dt>
 <dd>no comment</dd>
 </dl>
 <h2 id="examples">Examples</h2>
@@ -748,17 +773,19 @@ None
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get(self, **kwargs: Any) -&gt; Union[Node, Edge, None]:
-    &#34;&#34;&#34;Get the Element(Node/Edge) object in the Elements matching the `kwargs`.
+<pre><code class="python">def get(self, **kwargs: Any) -&gt; Union[NodeT, EdgeT, None]:
+    &#34;&#34;&#34;Get the Element(`element.Node`/`element.Edge`) object
+     in the `GenericElements` matching the `kwargs`.
 
     Must specify the values that uniquely identify the Element in the `kwargs`.
     The others parameters are ignored.
 
     Args:
-        **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+        **kwargs (Any): the values of `GenericElements.node_keys`
+         or `GenericElements.edge_keys`
 
     Returns:
-        Union[Node, Edge, None]: no comment
+        Union[element.Node, element.Edge, None]: no comment
 
     Examples:
         &gt;&gt;&gt; e = Elements()
@@ -793,18 +820,19 @@ None
     return None</code></pre>
 </details>
 </dd>
-<dt id="dash_cytoscape_elements.Elements.remove"><code class="name flex">
+<dt id="dash_cytoscape_elements.GenericElements.remove"><code class="name flex">
 <span>def <span class="ident">remove</span></span>(<span>self, **kwargs: Any) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Remove the Element(Node/Edge) object in the Elements.</p>
+<div class="desc"><p>Remove the Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>) object in the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code>.</p>
 <p>Must specify the values that uniquely identify the Element in the <code>kwargs</code>.
 The others parameters are ignored.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
-<dd>the values of <code><a title="dash_cytoscape_elements.Elements.node_keys" href="#dash_cytoscape_elements.Elements.node_keys">Elements.node_keys</a></code> or <code><a title="dash_cytoscape_elements.Elements.edge_keys" href="#dash_cytoscape_elements.Elements.edge_keys">Elements.edge_keys</a></code></dd>
+<dd>the values of <code><a title="dash_cytoscape_elements.GenericElements.node_keys" href="#dash_cytoscape_elements.GenericElements.node_keys">GenericElements.node_keys</a></code></dd>
 </dl>
+<p>or <code><a title="dash_cytoscape_elements.GenericElements.edge_keys" href="#dash_cytoscape_elements.GenericElements.edge_keys">GenericElements.edge_keys</a></code></p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>None</code></dt>
@@ -832,13 +860,14 @@ The others parameters are ignored.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def remove(self, **kwargs: Any) -&gt; None:
-    &#34;&#34;&#34;Remove the Element(Node/Edge) object in the Elements.
+    &#34;&#34;&#34;Remove the Element(`element.Node`/`element.Edge`) object in the `GenericElements`.
 
     Must specify the values that uniquely identify the Element in the `kwargs`.
     The others parameters are ignored.
 
     Args:
-        **kwargs (Any): the values of `Elements.node_keys` or `Elements.edge_keys`
+        **kwargs (Any): the values of `GenericElements.node_keys`
+         or `GenericElements.edge_keys`
 
     Returns:
         None: no comment
@@ -865,7 +894,7 @@ The others parameters are ignored.</p>
         self._remove(element)</code></pre>
 </details>
 </dd>
-<dt id="dash_cytoscape_elements.Elements.to_dash"><code class="name flex">
+<dt id="dash_cytoscape_elements.GenericElements.to_dash"><code class="name flex">
 <span>def <span class="ident">to_dash</span></span>(<span>self) ‑> List[~T]</span>
 </code></dt>
 <dd>
@@ -898,7 +927,7 @@ The others parameters are ignored.</p>
     return []</code></pre>
 </details>
 </dd>
-<dt id="dash_cytoscape_elements.Elements.to_json"><code class="name flex">
+<dt id="dash_cytoscape_elements.GenericElements.to_json"><code class="name flex">
 <span>def <span class="ident">to_json</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
@@ -932,6 +961,50 @@ The others parameters are ignored.</p>
 </dd>
 </dl>
 </dd>
+<dt id="dash_cytoscape_elements.GenericElements[Node, Edge]"><code class="flex name class">
+<span>class <span class="ident">Elements</span></span>
+<span>(</span><span>**data: Any)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This generic class is a List of Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>) object.</p>
+<p>It can specify the type of Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>).</p>
+<p>Basically to use Elements(Type Alias of <code><a title="dash_cytoscape_elements.GenericElements[Node, Edge]" href="#dash_cytoscape_elements.GenericElements[Node, Edge]">GenericElements[Node, Edge]</a></code>).</p>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dash_cytoscape_elements.elements.GenericElements" href="elements.html#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></li>
+<li>pydantic.generics.GenericModel</li>
+<li>pydantic.main.BaseModel</li>
+<li>pydantic.utils.Representation</li>
+<li>typing.Generic</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dash_cytoscape_elements.GenericElements[Node, Edge].Config"><code class="name">var <span class="ident">Config</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="dash_cytoscape_elements.elements.GenericElements" href="elements.html#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></b></code>:
+<ul class="hlist">
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.add" href="elements.html#dash_cytoscape_elements.elements.GenericElements.add">add</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.edge_keys" href="elements.html#dash_cytoscape_elements.elements.GenericElements.edge_keys">edge_keys</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.filter" href="elements.html#dash_cytoscape_elements.elements.GenericElements.filter">filter</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.from_dash" href="elements.html#dash_cytoscape_elements.elements.GenericElements.from_dash">from_dash</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.from_file" href="elements.html#dash_cytoscape_elements.elements.GenericElements.from_file">from_file</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.from_json" href="elements.html#dash_cytoscape_elements.elements.GenericElements.from_json">from_json</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.get" href="elements.html#dash_cytoscape_elements.elements.GenericElements.get">get</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.node_keys" href="elements.html#dash_cytoscape_elements.elements.GenericElements.node_keys">node_keys</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.remove" href="elements.html#dash_cytoscape_elements.elements.GenericElements.remove">remove</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.to_dash" href="elements.html#dash_cytoscape_elements.elements.GenericElements.to_dash">to_dash</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.to_json" href="elements.html#dash_cytoscape_elements.elements.GenericElements.to_json">to_json</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 </dl>
 </section>
 </article>
@@ -950,21 +1023,25 @@ The others parameters are ignored.</p>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="dash_cytoscape_elements.Elements" href="#dash_cytoscape_elements.Elements">Elements</a></code></h4>
+<h4><code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code></h4>
 <ul class="two-column">
-<li><code><a title="dash_cytoscape_elements.Elements.EdgeType" href="#dash_cytoscape_elements.Elements.EdgeType">EdgeType</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.NodeType" href="#dash_cytoscape_elements.Elements.NodeType">NodeType</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.add" href="#dash_cytoscape_elements.Elements.add">add</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.edge_keys" href="#dash_cytoscape_elements.Elements.edge_keys">edge_keys</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.filter" href="#dash_cytoscape_elements.Elements.filter">filter</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.from_dash" href="#dash_cytoscape_elements.Elements.from_dash">from_dash</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.from_file" href="#dash_cytoscape_elements.Elements.from_file">from_file</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.from_json" href="#dash_cytoscape_elements.Elements.from_json">from_json</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.get" href="#dash_cytoscape_elements.Elements.get">get</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.node_keys" href="#dash_cytoscape_elements.Elements.node_keys">node_keys</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.remove" href="#dash_cytoscape_elements.Elements.remove">remove</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.to_dash" href="#dash_cytoscape_elements.Elements.to_dash">to_dash</a></code></li>
-<li><code><a title="dash_cytoscape_elements.Elements.to_json" href="#dash_cytoscape_elements.Elements.to_json">to_json</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.add" href="#dash_cytoscape_elements.GenericElements.add">add</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.edge_keys" href="#dash_cytoscape_elements.GenericElements.edge_keys">edge_keys</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.filter" href="#dash_cytoscape_elements.GenericElements.filter">filter</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.from_dash" href="#dash_cytoscape_elements.GenericElements.from_dash">from_dash</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.from_file" href="#dash_cytoscape_elements.GenericElements.from_file">from_file</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.from_json" href="#dash_cytoscape_elements.GenericElements.from_json">from_json</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.get" href="#dash_cytoscape_elements.GenericElements.get">get</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.node_keys" href="#dash_cytoscape_elements.GenericElements.node_keys">node_keys</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.remove" href="#dash_cytoscape_elements.GenericElements.remove">remove</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.to_dash" href="#dash_cytoscape_elements.GenericElements.to_dash">to_dash</a></code></li>
+<li><code><a title="dash_cytoscape_elements.GenericElements.to_json" href="#dash_cytoscape_elements.GenericElements.to_json">to_json</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dash_cytoscape_elements.GenericElements[Node, Edge]" href="#dash_cytoscape_elements.GenericElements[Node, Edge]">GenericElements[Node, Edge]</a></code></h4>
+<ul class="">
+<li><code><a title="dash_cytoscape_elements.GenericElements[Node, Edge].Config" href="#dash_cytoscape_elements.GenericElements[Node, Edge].Config">Config</a></code></li>
 </ul>
 </li>
 </ul>
