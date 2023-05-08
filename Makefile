@@ -2,7 +2,10 @@ POETRY := poetry
 
 .PHONY: default black doc isort mypy test pytest
 
-default: black isort mypy pytest
+default: .venv black isort mypy pytest
+
+.venv:
+	@${POETRY} install
 
 black:
 	@printf "black:\n"
