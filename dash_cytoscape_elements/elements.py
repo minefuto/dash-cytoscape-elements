@@ -195,18 +195,8 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
             >>> print(e.get(id="node3"))
             None
         """
-        if kwargs.keys() >= self.node_keys:
-            key_dict = {k: kwargs[k] for k in self.node_keys}
-            for e in self.filter(group="nodes"):
-                if e.is_match(**key_dict):
-                    return e
-
-        if kwargs.keys() >= self.edge_keys:
-            key_dict = {k: kwargs[k] for k in self.edge_keys}
-            for e in self.filter(group="edges"):
-                if e.is_match(**key_dict):
-                    return e
-
+        for e in self.filter(**kwargs):
+            return e
         return None
 
     def add(self, **kwargs: Any) -> None:
@@ -255,7 +245,13 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
                 * List/Dict/Set and `classes`: append value
                 * The others Type: replace value
         """
-        element = self.get(**kwargs)
+        element = None
+        if kwargs.keys() >= self.edge_keys:
+            key_dict = {k: kwargs[k] for k in self.edge_keys}
+            element = self.get(**key_dict)
+        elif kwargs.keys() >= self.node_keys:
+            key_dict = {k: kwargs[k] for k in self.node_keys}
+            element = self.get(**key_dict)
 
         if element:
             if "id" in kwargs:
@@ -309,7 +305,14 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
             >>> print(e)
             [Node(id="node2"), Edge(id="edge1"), Edge(id="edge2")]
         """
-        element = self.get(**kwargs)
+        element = None
+        if kwargs.keys() >= self.edge_keys:
+            key_dict = {k: kwargs[k] for k in self.edge_keys}
+            element = self.get(**key_dict)
+        elif kwargs.keys() >= self.node_keys:
+            key_dict = {k: kwargs[k] for k in self.node_keys}
+            element = self.get(**key_dict)
+
         if element:
             self._remove(element)
 

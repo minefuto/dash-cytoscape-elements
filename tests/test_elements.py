@@ -69,7 +69,7 @@ def test_get_edge_success(init):
 
 
 def test_get_edge_fail(init):
-    edge = init.get(id="edge1")
+    edge = init.get(source="node3", target="node4")
     assert edge is None
 
 
