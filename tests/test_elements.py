@@ -192,3 +192,9 @@ def test_custom_element(custom_init):
     assert custom_init == GenericElements[CustomNode, CustomEdge].from_file(
         "./tests/mock_data/add_custom_element.json"
     )
+
+
+def test_element_getattr(init):
+    assert init.get(id="node1").id == "node1"
+    assert init.get(id="node1").parent == "node1_parent"
+    assert init.get(id="node1").classes == "node1"

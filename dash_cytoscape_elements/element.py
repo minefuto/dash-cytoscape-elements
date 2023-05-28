@@ -12,8 +12,18 @@ class BaseElement(BaseModel):
         allow_population_by_field_name: bool = True
         extra: str = "forbid"
 
+    def __getattr__(self, value: str) -> Any:
+        for k, v in vars(self).items():
+            if isinstance(v, BaseElement):
+                result = v.__getattribute__(value)
+                if result:
+                    return result
+            elif k == value:
+                return v
+        return None
+
     def is_match_attribute(self, key: str, value: Any) -> bool:
-        if hasattr(self, key):
+        if key in vars(self):
             if isinstance(getattr(self, key), List):
                 if isinstance(value, List):
                     return set(getattr(self, key)) >= set(value)
@@ -38,7 +48,7 @@ class BaseElement(BaseModel):
             return False
 
     def add_attribute(self, key: str, value: Any):
-        if hasattr(self, key):
+        if key in vars(self):
             if isinstance(getattr(self, key), List):
                 if isinstance(value, List):
                     for v in value:
