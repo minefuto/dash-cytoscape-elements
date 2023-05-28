@@ -34,7 +34,7 @@ Elements.</p>
 &#34;&#34;&#34;
 from .elements import Elements, GenericElements
 
-__version__ = &#34;0.0.1&#34;
+__version__ = &#34;0.0.2&#34;
 __all__ = [
     &#34;Elements&#34;,
     &#34;GenericElements&#34;,
@@ -231,12 +231,10 @@ __all__ = [
         &#34;&#34;&#34;Get the Element(`element.Node`/`element.Edge`) object
          in the `GenericElements` matching the `kwargs`.
 
-        Must specify the values that uniquely identify the Element in the `kwargs`.
-        The others parameters are ignored.
+        Get first element if matching multiple elements.
 
         Args:
-            **kwargs (Any): the values of `GenericElements.node_keys`
-             or `GenericElements.edge_keys`
+            **kwargs (Any): each class variables in the Element(`element.Node`/`element.Edge`)
 
         Returns:
             Union[element.Node, element.Edge, None]: no comment
@@ -259,18 +257,8 @@ __all__ = [
             &gt;&gt;&gt; print(e.get(id=&#34;node3&#34;))
             None
         &#34;&#34;&#34;
-        if kwargs.keys() &gt;= self.node_keys:
-            key_dict = {k: kwargs[k] for k in self.node_keys}
-            for e in self.filter(group=&#34;nodes&#34;):
-                if e.is_match(**key_dict):
-                    return e
-
-        if kwargs.keys() &gt;= self.edge_keys:
-            key_dict = {k: kwargs[k] for k in self.edge_keys}
-            for e in self.filter(group=&#34;edges&#34;):
-                if e.is_match(**key_dict):
-                    return e
-
+        for e in self.filter(**kwargs):
+            return e
         return None
 
     def add(self, **kwargs: Any) -&gt; None:
@@ -280,7 +268,7 @@ __all__ = [
         Otherwise add the `element.Node`.
 
         Args:
-            **kwargs (Any): each class variables in `element`
+            **kwargs (Any): each class variables in the Element(`element.Node`/`element.Edge`)
 
         Returns:
             None: no comment
@@ -319,7 +307,13 @@ __all__ = [
                 * List/Dict/Set and `classes`: append value
                 * The others Type: replace value
         &#34;&#34;&#34;
-        element = self.get(**kwargs)
+        element = None
+        if kwargs.keys() &gt;= self.edge_keys:
+            key_dict = {k: kwargs[k] for k in self.edge_keys}
+            element = self.get(**key_dict)
+        elif kwargs.keys() &gt;= self.node_keys:
+            key_dict = {k: kwargs[k] for k in self.node_keys}
+            element = self.get(**key_dict)
 
         if element:
             if &#34;id&#34; in kwargs:
@@ -373,7 +367,14 @@ __all__ = [
             &gt;&gt;&gt; print(e)
             [Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
         &#34;&#34;&#34;
-        element = self.get(**kwargs)
+        element = None
+        if kwargs.keys() &gt;= self.edge_keys:
+            key_dict = {k: kwargs[k] for k in self.edge_keys}
+            element = self.get(**key_dict)
+        elif kwargs.keys() &gt;= self.node_keys:
+            key_dict = {k: kwargs[k] for k in self.node_keys}
+            element = self.get(**key_dict)
+
         if element:
             self._remove(element)</code></pre>
 </details>
@@ -535,7 +536,7 @@ Otherwise add the <code><a title="dash_cytoscape_elements.element.Node" href="el
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
-<dd>each class variables in <code><a title="dash_cytoscape_elements.element" href="element.html">dash_cytoscape_elements.element</a></code></dd>
+<dd>each class variables in the Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>)</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -590,7 +591,7 @@ Otherwise add the <code><a title="dash_cytoscape_elements.element.Node" href="el
     Otherwise add the `element.Node`.
 
     Args:
-        **kwargs (Any): each class variables in `element`
+        **kwargs (Any): each class variables in the Element(`element.Node`/`element.Edge`)
 
     Returns:
         None: no comment
@@ -629,7 +630,13 @@ Otherwise add the <code><a title="dash_cytoscape_elements.element.Node" href="el
             * List/Dict/Set and `classes`: append value
             * The others Type: replace value
     &#34;&#34;&#34;
-    element = self.get(**kwargs)
+    element = None
+    if kwargs.keys() &gt;= self.edge_keys:
+        key_dict = {k: kwargs[k] for k in self.edge_keys}
+        element = self.get(**key_dict)
+    elif kwargs.keys() &gt;= self.node_keys:
+        key_dict = {k: kwargs[k] for k in self.node_keys}
+        element = self.get(**key_dict)
 
     if element:
         if &#34;id&#34; in kwargs:
@@ -738,14 +745,12 @@ objects that match <code>kwargs</code>.</p>
 <dd>
 <div class="desc"><p>Get the Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>) object
 in the <code><a title="dash_cytoscape_elements.GenericElements" href="#dash_cytoscape_elements.GenericElements">GenericElements</a></code> matching the <code>kwargs</code>.</p>
-<p>Must specify the values that uniquely identify the Element in the <code>kwargs</code>.
-The others parameters are ignored.</p>
+<p>Get first element if matching multiple elements.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
-<dd>the values of <code><a title="dash_cytoscape_elements.GenericElements.node_keys" href="#dash_cytoscape_elements.GenericElements.node_keys">GenericElements.node_keys</a></code></dd>
+<dd>each class variables in the Element(<code><a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a></code>/<code><a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a></code>)</dd>
 </dl>
-<p>or <code><a title="dash_cytoscape_elements.GenericElements.edge_keys" href="#dash_cytoscape_elements.GenericElements.edge_keys">GenericElements.edge_keys</a></code></p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Union[<a title="dash_cytoscape_elements.element.Node" href="element.html#dash_cytoscape_elements.element.Node">Node</a>, <a title="dash_cytoscape_elements.element.Edge" href="element.html#dash_cytoscape_elements.element.Edge">Edge</a>, None]</code></dt>
@@ -777,12 +782,10 @@ None
     &#34;&#34;&#34;Get the Element(`element.Node`/`element.Edge`) object
      in the `GenericElements` matching the `kwargs`.
 
-    Must specify the values that uniquely identify the Element in the `kwargs`.
-    The others parameters are ignored.
+    Get first element if matching multiple elements.
 
     Args:
-        **kwargs (Any): the values of `GenericElements.node_keys`
-         or `GenericElements.edge_keys`
+        **kwargs (Any): each class variables in the Element(`element.Node`/`element.Edge`)
 
     Returns:
         Union[element.Node, element.Edge, None]: no comment
@@ -805,18 +808,8 @@ None
         &gt;&gt;&gt; print(e.get(id=&#34;node3&#34;))
         None
     &#34;&#34;&#34;
-    if kwargs.keys() &gt;= self.node_keys:
-        key_dict = {k: kwargs[k] for k in self.node_keys}
-        for e in self.filter(group=&#34;nodes&#34;):
-            if e.is_match(**key_dict):
-                return e
-
-    if kwargs.keys() &gt;= self.edge_keys:
-        key_dict = {k: kwargs[k] for k in self.edge_keys}
-        for e in self.filter(group=&#34;edges&#34;):
-            if e.is_match(**key_dict):
-                return e
-
+    for e in self.filter(**kwargs):
+        return e
     return None</code></pre>
 </details>
 </dd>
@@ -889,7 +882,14 @@ The others parameters are ignored.</p>
         &gt;&gt;&gt; print(e)
         [Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
     &#34;&#34;&#34;
-    element = self.get(**kwargs)
+    element = None
+    if kwargs.keys() &gt;= self.edge_keys:
+        key_dict = {k: kwargs[k] for k in self.edge_keys}
+        element = self.get(**key_dict)
+    elif kwargs.keys() &gt;= self.node_keys:
+        key_dict = {k: kwargs[k] for k in self.node_keys}
+        element = self.get(**key_dict)
+
     if element:
         self._remove(element)</code></pre>
 </details>

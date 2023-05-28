@@ -167,12 +167,10 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
         """Get the Element(`element.Node`/`element.Edge`) object
          in the `GenericElements` matching the `kwargs`.
 
-        Must specify the values that uniquely identify the Element in the `kwargs`.
-        The others parameters are ignored.
+        Get first element if matching multiple elements.
 
         Args:
-            **kwargs (Any): the values of `GenericElements.node_keys`
-             or `GenericElements.edge_keys`
+            **kwargs (Any): each class variables in the Element(`element.Node`/`element.Edge`)
 
         Returns:
             Union[element.Node, element.Edge, None]: no comment
@@ -206,7 +204,7 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
         Otherwise add the `element.Node`.
 
         Args:
-            **kwargs (Any): each class variables in `element`
+            **kwargs (Any): each class variables in the Element(`element.Node`/`element.Edge`)
 
         Returns:
             None: no comment
