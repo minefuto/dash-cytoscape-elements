@@ -1,4 +1,5 @@
 """The data structures of Dash Cystoscape/Cytoscape.js element."""
+import re
 from typing import Any, Dict, List, Set
 
 from pydantic import BaseModel, Field, validator
@@ -45,6 +46,30 @@ class BaseElement(BaseModel):
             for v in self.__dict__.values():
                 if isinstance(v, BaseElement):
                     return v.is_match_attribute(key, value)
+            return False
+
+    def is_re_match_attribute(self, key: str, pattern: re.Pattern) -> bool:
+        if key in vars(self):
+            if isinstance(getattr(self, key), List):
+                for value in getattr(self, key):
+                    if pattern.search(value):
+                        return True
+            elif isinstance(getattr(self, key), Set):
+                for value in getattr(self, key):
+                    if pattern.search(value):
+                        return True
+            elif isinstance(getattr(self, key), Dict):
+                for value in getattr(self, key):
+                    if pattern.search(value):
+                        return True
+            else:
+                if pattern.search(getattr(self, key)):
+                    return True
+            return False
+        else:
+            for v in self.__dict__.values():
+                if isinstance(v, BaseElement):
+                    return v.is_re_match_attribute(key, pattern)
             return False
 
     def add_attribute(self, key: str, value: Any):
@@ -112,6 +137,17 @@ class Element(BaseElement):
             if not (self.is_match_attribute(k, v)):
                 return False
         return True
+
+    def is_re_match(self, **kwargs: Any) -> bool:
+        for k, v in kwargs.items():
+            pattern = re.compile(v)
+            if k == "classes":
+                for c in self.classes.split():
+                    if pattern.search(c):
+                        return True
+            elif self.is_re_match_attribute(k, pattern):
+                return True
+        return False
 
     def _add_classes(self, value: str) -> None:
         classes = self.classes.split()

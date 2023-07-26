@@ -48,6 +48,16 @@ def test_filter_success(init):
     )
 
 
+def test_re_filter_success(init):
+    filter = init.re_filter(group="nod.*")
+    assert filter == Elements.from_file("./tests/mock_data/re_filter_success.json")
+
+    filter_classes = init.re_filter(classes="node.*")
+    assert filter_classes == Elements.from_file(
+        "./tests/mock_data/re_filter_success_classes.json"
+    )
+
+
 def test_filter_failed(init):
     filter = init.filter(group="nodes", id="edge1")
     assert filter == Elements()

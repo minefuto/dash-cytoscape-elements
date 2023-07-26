@@ -130,7 +130,7 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
     def filter(self, **kwargs: Any) -> "GenericElements":
         """Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
-         objects that match `kwargs`.
+         objects that exact match `kwargs`.
 
         Args:
             **kwargs (Any): no comment
@@ -154,12 +154,47 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
         Note:
             * Match criteria of filter
-                * List/Dict/Set and `classes`: include value or not
+                * List/Dict/Set and `classes`: include exact match value or not
                 * The others Type: exact match value or not
         """
         elements = Elements()
         for e in self:
             if e.is_match(**kwargs):
+                elements._append(e)
+        return elements
+
+    def re_filter(self, **kwargs: Any) -> "GenericElements":
+        """Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
+         objects that regex match `kwargs`.
+
+        Args:
+            **kwargs (Any): no comment
+
+        Returns:
+            GenericElements: no comment
+
+        Examples:
+            >>> e = Elements()
+            >>> e.add(id="node1", parent="p1", classes="test test2")
+            >>> e.add(id="node2", parent="p2")
+            >>> e.add(id="edge1", source="node1", target="node2", classes="abc")
+            >>> e.add(id="edge2", source="node2", target="node1", classes="test")
+            >>>
+            >>> print(e)
+            [Node(id="node1"), Node(id="node2"), Edge(id="edge1"), Edge(id="edge2")]
+            >>> print(e.re_filter(classes="te.*"))
+            [Node(id="node1"), Edge(id="edge2")]
+            >>> print(e.re_filter(parent="p\\d"))
+            [Node(id="node1"), Node(id="node2")]
+
+        Note:
+            * Match criteria of filter
+                * List/Dict/Set and `classes`: include regex match value or not
+                * The others Type: regex match value or not
+        """
+        elements = Elements()
+        for e in self:
+            if e.is_re_match(**kwargs):
                 elements._append(e)
         return elements
 
