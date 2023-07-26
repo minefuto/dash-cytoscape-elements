@@ -184,7 +184,7 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
             [Node(id="node1"), Node(id="node2"), Edge(id="edge1"), Edge(id="edge2")]
             >>> print(e.re_filter(classes="te.*"))
             [Node(id="node1"), Edge(id="edge2")]
-            >>> print(e.re_filter(parent="p\\d"))
+            >>> print(e.re_filter(parent="p.*"))
             [Node(id="node1"), Node(id="node2")]
 
         Note:

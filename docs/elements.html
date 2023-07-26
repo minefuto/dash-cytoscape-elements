@@ -159,7 +159,7 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
     def filter(self, **kwargs: Any) -&gt; &#34;GenericElements&#34;:
         &#34;&#34;&#34;Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
-         objects that match `kwargs`.
+         objects that exact match `kwargs`.
 
         Args:
             **kwargs (Any): no comment
@@ -183,12 +183,47 @@ class GenericElements(GenericModel, Generic[NodeT, EdgeT]):
 
         Note:
             * Match criteria of filter
-                * List/Dict/Set and `classes`: include value or not
+                * List/Dict/Set and `classes`: include exact match value or not
                 * The others Type: exact match value or not
         &#34;&#34;&#34;
         elements = Elements()
         for e in self:
             if e.is_match(**kwargs):
+                elements._append(e)
+        return elements
+
+    def re_filter(self, **kwargs: Any) -&gt; &#34;GenericElements&#34;:
+        &#34;&#34;&#34;Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
+         objects that regex match `kwargs`.
+
+        Args:
+            **kwargs (Any): no comment
+
+        Returns:
+            GenericElements: no comment
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;, parent=&#34;p1&#34;, classes=&#34;test test2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;node2&#34;, parent=&#34;p2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;, classes=&#34;abc&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;, classes=&#34;test&#34;)
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt; print(e.re_filter(classes=&#34;te.*&#34;))
+            [Node(id=&#34;node1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt; print(e.re_filter(parent=&#34;p.*&#34;))
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;)]
+
+        Note:
+            * Match criteria of filter
+                * List/Dict/Set and `classes`: include regex match value or not
+                * The others Type: regex match value or not
+        &#34;&#34;&#34;
+        elements = Elements()
+        for e in self:
+            if e.is_re_match(**kwargs):
                 elements._append(e)
         return elements
 
@@ -489,7 +524,7 @@ Elements: TypeAlias = GenericElements[Node, Edge]</code></pre>
 
     def filter(self, **kwargs: Any) -&gt; &#34;GenericElements&#34;:
         &#34;&#34;&#34;Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
-         objects that match `kwargs`.
+         objects that exact match `kwargs`.
 
         Args:
             **kwargs (Any): no comment
@@ -513,12 +548,47 @@ Elements: TypeAlias = GenericElements[Node, Edge]</code></pre>
 
         Note:
             * Match criteria of filter
-                * List/Dict/Set and `classes`: include value or not
+                * List/Dict/Set and `classes`: include exact match value or not
                 * The others Type: exact match value or not
         &#34;&#34;&#34;
         elements = Elements()
         for e in self:
             if e.is_match(**kwargs):
+                elements._append(e)
+        return elements
+
+    def re_filter(self, **kwargs: Any) -&gt; &#34;GenericElements&#34;:
+        &#34;&#34;&#34;Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
+         objects that regex match `kwargs`.
+
+        Args:
+            **kwargs (Any): no comment
+
+        Returns:
+            GenericElements: no comment
+
+        Examples:
+            &gt;&gt;&gt; e = Elements()
+            &gt;&gt;&gt; e.add(id=&#34;node1&#34;, parent=&#34;p1&#34;, classes=&#34;test test2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;node2&#34;, parent=&#34;p2&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;, classes=&#34;abc&#34;)
+            &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;, classes=&#34;test&#34;)
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; print(e)
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt; print(e.re_filter(classes=&#34;te.*&#34;))
+            [Node(id=&#34;node1&#34;), Edge(id=&#34;edge2&#34;)]
+            &gt;&gt;&gt; print(e.re_filter(parent=&#34;p.*&#34;))
+            [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;)]
+
+        Note:
+            * Match criteria of filter
+                * List/Dict/Set and `classes`: include regex match value or not
+                * The others Type: regex match value or not
+        &#34;&#34;&#34;
+        elements = Elements()
+        for e in self:
+            if e.is_re_match(**kwargs):
                 elements._append(e)
         return elements
 
@@ -961,7 +1031,7 @@ Otherwise add the <code>element.Node</code>.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Get the <code><a title="dash_cytoscape_elements.elements.GenericElements" href="#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></code> contains Element(<code>element.Node</code>/<code>element.Edge</code>)
-objects that match <code>kwargs</code>.</p>
+objects that exact match <code>kwargs</code>.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
@@ -989,7 +1059,7 @@ objects that match <code>kwargs</code>.</p>
 <h2 id="note">Note</h2>
 <ul>
 <li>Match criteria of filter<ul>
-<li>List/Dict/Set and <code>classes</code>: include value or not</li>
+<li>List/Dict/Set and <code>classes</code>: include exact match value or not</li>
 <li>The others Type: exact match value or not</li>
 </ul>
 </li>
@@ -1000,7 +1070,7 @@ objects that match <code>kwargs</code>.</p>
 </summary>
 <pre><code class="python">def filter(self, **kwargs: Any) -&gt; &#34;GenericElements&#34;:
     &#34;&#34;&#34;Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
-     objects that match `kwargs`.
+     objects that exact match `kwargs`.
 
     Args:
         **kwargs (Any): no comment
@@ -1024,7 +1094,7 @@ objects that match <code>kwargs</code>.</p>
 
     Note:
         * Match criteria of filter
-            * List/Dict/Set and `classes`: include value or not
+            * List/Dict/Set and `classes`: include exact match value or not
             * The others Type: exact match value or not
     &#34;&#34;&#34;
     elements = Elements()
@@ -1106,6 +1176,84 @@ None
     for e in self.filter(**kwargs):
         return e
     return None</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.elements.GenericElements.re_filter"><code class="name flex">
+<span>def <span class="ident">re_filter</span></span>(<span>self, **kwargs: Any) ‑> <a title="dash_cytoscape_elements.elements.GenericElements" href="#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the <code><a title="dash_cytoscape_elements.elements.GenericElements" href="#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></code> contains Element(<code>element.Node</code>/<code>element.Edge</code>)
+objects that regex match <code>kwargs</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>Any</code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="dash_cytoscape_elements.elements.GenericElements" href="#dash_cytoscape_elements.elements.GenericElements">GenericElements</a></code></dt>
+<dd>no comment</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; e = Elements()
+&gt;&gt;&gt; e.add(id=&quot;node1&quot;, parent=&quot;p1&quot;, classes=&quot;test test2&quot;)
+&gt;&gt;&gt; e.add(id=&quot;node2&quot;, parent=&quot;p2&quot;)
+&gt;&gt;&gt; e.add(id=&quot;edge1&quot;, source=&quot;node1&quot;, target=&quot;node2&quot;, classes=&quot;abc&quot;)
+&gt;&gt;&gt; e.add(id=&quot;edge2&quot;, source=&quot;node2&quot;, target=&quot;node1&quot;, classes=&quot;test&quot;)
+&gt;&gt;&gt;
+&gt;&gt;&gt; print(e)
+[Node(id=&quot;node1&quot;), Node(id=&quot;node2&quot;), Edge(id=&quot;edge1&quot;), Edge(id=&quot;edge2&quot;)]
+&gt;&gt;&gt; print(e.re_filter(classes=&quot;te.*&quot;))
+[Node(id=&quot;node1&quot;), Edge(id=&quot;edge2&quot;)]
+&gt;&gt;&gt; print(e.re_filter(parent=&quot;p.*&quot;))
+[Node(id=&quot;node1&quot;), Node(id=&quot;node2&quot;)]
+</code></pre>
+<h2 id="note">Note</h2>
+<ul>
+<li>Match criteria of filter<ul>
+<li>List/Dict/Set and <code>classes</code>: include regex match value or not</li>
+<li>The others Type: regex match value or not</li>
+</ul>
+</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def re_filter(self, **kwargs: Any) -&gt; &#34;GenericElements&#34;:
+    &#34;&#34;&#34;Get the `GenericElements` contains Element(`element.Node`/`element.Edge`)
+     objects that regex match `kwargs`.
+
+    Args:
+        **kwargs (Any): no comment
+
+    Returns:
+        GenericElements: no comment
+
+    Examples:
+        &gt;&gt;&gt; e = Elements()
+        &gt;&gt;&gt; e.add(id=&#34;node1&#34;, parent=&#34;p1&#34;, classes=&#34;test test2&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;node2&#34;, parent=&#34;p2&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;edge1&#34;, source=&#34;node1&#34;, target=&#34;node2&#34;, classes=&#34;abc&#34;)
+        &gt;&gt;&gt; e.add(id=&#34;edge2&#34;, source=&#34;node2&#34;, target=&#34;node1&#34;, classes=&#34;test&#34;)
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; print(e)
+        [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;), Edge(id=&#34;edge1&#34;), Edge(id=&#34;edge2&#34;)]
+        &gt;&gt;&gt; print(e.re_filter(classes=&#34;te.*&#34;))
+        [Node(id=&#34;node1&#34;), Edge(id=&#34;edge2&#34;)]
+        &gt;&gt;&gt; print(e.re_filter(parent=&#34;p.*&#34;))
+        [Node(id=&#34;node1&#34;), Node(id=&#34;node2&#34;)]
+
+    Note:
+        * Match criteria of filter
+            * List/Dict/Set and `classes`: include regex match value or not
+            * The others Type: regex match value or not
+    &#34;&#34;&#34;
+    elements = Elements()
+    for e in self:
+        if e.is_re_match(**kwargs):
+            elements._append(e)
+    return elements</code></pre>
 </details>
 </dd>
 <dt id="dash_cytoscape_elements.elements.GenericElements.remove"><code class="name flex">
@@ -1293,6 +1441,7 @@ The others parameters are ignored.</p>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.from_json" href="#dash_cytoscape_elements.elements.GenericElements.from_json">from_json</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.get" href="#dash_cytoscape_elements.elements.GenericElements.get">get</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.node_keys" href="#dash_cytoscape_elements.elements.GenericElements.node_keys">node_keys</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.re_filter" href="#dash_cytoscape_elements.elements.GenericElements.re_filter">re_filter</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.remove" href="#dash_cytoscape_elements.elements.GenericElements.remove">remove</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.to_dash" href="#dash_cytoscape_elements.elements.GenericElements.to_dash">to_dash</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.to_json" href="#dash_cytoscape_elements.elements.GenericElements.to_json">to_json</a></code></li>
@@ -1327,6 +1476,7 @@ The others parameters are ignored.</p>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.from_json" href="#dash_cytoscape_elements.elements.GenericElements.from_json">from_json</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.get" href="#dash_cytoscape_elements.elements.GenericElements.get">get</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.node_keys" href="#dash_cytoscape_elements.elements.GenericElements.node_keys">node_keys</a></code></li>
+<li><code><a title="dash_cytoscape_elements.elements.GenericElements.re_filter" href="#dash_cytoscape_elements.elements.GenericElements.re_filter">re_filter</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.remove" href="#dash_cytoscape_elements.elements.GenericElements.remove">remove</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.to_dash" href="#dash_cytoscape_elements.elements.GenericElements.to_dash">to_dash</a></code></li>
 <li><code><a title="dash_cytoscape_elements.elements.GenericElements.to_json" href="#dash_cytoscape_elements.elements.GenericElements.to_json">to_json</a></code></li>

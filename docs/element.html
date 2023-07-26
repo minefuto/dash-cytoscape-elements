@@ -28,6 +28,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;The data structures of Dash Cystoscape/Cytoscape.js element.&#34;&#34;&#34;
+import re
 from typing import Any, Dict, List, Set
 
 from pydantic import BaseModel, Field, validator
@@ -74,6 +75,30 @@ class BaseElement(BaseModel):
             for v in self.__dict__.values():
                 if isinstance(v, BaseElement):
                     return v.is_match_attribute(key, value)
+            return False
+
+    def is_re_match_attribute(self, key: str, pattern: re.Pattern) -&gt; bool:
+        if key in vars(self):
+            if isinstance(getattr(self, key), List):
+                for value in getattr(self, key):
+                    if pattern.search(value):
+                        return True
+            elif isinstance(getattr(self, key), Set):
+                for value in getattr(self, key):
+                    if pattern.search(value):
+                        return True
+            elif isinstance(getattr(self, key), Dict):
+                for value in getattr(self, key):
+                    if pattern.search(value):
+                        return True
+            else:
+                if pattern.search(getattr(self, key)):
+                    return True
+            return False
+        else:
+            for v in self.__dict__.values():
+                if isinstance(v, BaseElement):
+                    return v.is_re_match_attribute(key, pattern)
             return False
 
     def add_attribute(self, key: str, value: Any):
@@ -141,6 +166,17 @@ class Element(BaseElement):
             if not (self.is_match_attribute(k, v)):
                 return False
         return True
+
+    def is_re_match(self, **kwargs: Any) -&gt; bool:
+        for k, v in kwargs.items():
+            pattern = re.compile(v)
+            if k == &#34;classes&#34;:
+                for c in self.classes.split():
+                    if pattern.search(c):
+                        return True
+            elif self.is_re_match_attribute(k, pattern):
+                return True
+        return False
 
     def _add_classes(self, value: str) -&gt; None:
         classes = self.classes.split()
@@ -338,6 +374,17 @@ def generate_group(cls, group) -&gt; str:
                 return False
         return True
 
+    def is_re_match(self, **kwargs: Any) -&gt; bool:
+        for k, v in kwargs.items():
+            pattern = re.compile(v)
+            if k == &#34;classes&#34;:
+                for c in self.classes.split():
+                    if pattern.search(c):
+                        return True
+            elif self.is_re_match_attribute(k, pattern):
+                return True
+        return False
+
     def _add_classes(self, value: str) -&gt; None:
         classes = self.classes.split()
         for c in value.split():
@@ -429,6 +476,27 @@ def generate_group(cls, group) -&gt; str:
         if not (self.is_match_attribute(k, v)):
             return False
     return True</code></pre>
+</details>
+</dd>
+<dt id="dash_cytoscape_elements.element.Element.is_re_match"><code class="name flex">
+<span>def <span class="ident">is_re_match</span></span>(<span>self, **kwargs: Any) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_re_match(self, **kwargs: Any) -&gt; bool:
+    for k, v in kwargs.items():
+        pattern = re.compile(v)
+        if k == &#34;classes&#34;:
+            for c in self.classes.split():
+                if pattern.search(c):
+                    return True
+        elif self.is_re_match_attribute(k, pattern):
+            return True
+    return False</code></pre>
 </details>
 </dd>
 </dl>
@@ -614,6 +682,7 @@ def generate_group(cls, group) -&gt; str:
 <li><code><a title="dash_cytoscape_elements.element.Element.grabbable" href="#dash_cytoscape_elements.element.Element.grabbable">grabbable</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Element.group" href="#dash_cytoscape_elements.element.Element.group">group</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Element.is_match" href="#dash_cytoscape_elements.element.Element.is_match">is_match</a></code></li>
+<li><code><a title="dash_cytoscape_elements.element.Element.is_re_match" href="#dash_cytoscape_elements.element.Element.is_re_match">is_re_match</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Element.locked" href="#dash_cytoscape_elements.element.Element.locked">locked</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Element.scratch" href="#dash_cytoscape_elements.element.Element.scratch">scratch</a></code></li>
 <li><code><a title="dash_cytoscape_elements.element.Element.selectable" href="#dash_cytoscape_elements.element.Element.selectable">selectable</a></code></li>
